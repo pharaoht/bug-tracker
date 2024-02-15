@@ -1,3 +1,4 @@
+const { repoCreateIssue, repoGetAllIsues, } = require('../repository/issue.repository');
 
 module.exports = class Issue{
 
@@ -6,9 +7,29 @@ module.exports = class Issue{
         this.description = description;
     }
 
-    createIssue(){
+    modelCreateIssue(){
 
+        const issueDataObj = {
+            title: this.title,
+            description: this.description
+        };
+
+        return repoCreateIssue(issueDataObj);
     }
+
+    static modelUpdateIssue(id){ };
+
+    static modelArchiveIssue(id) { };
+
+    static modelGetAllIssues() { 
+
+        return repoGetAllIsues();
+    };
+
+    static modelGetIssue(id) { };
+
+    static searchIssue() { };
+
 }
 
 

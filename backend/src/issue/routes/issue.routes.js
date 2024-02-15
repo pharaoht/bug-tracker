@@ -1,11 +1,11 @@
 const express = require('express');
 
-const { httpGetAllIssues } = require('../controller/issue.controller')//controller
+const { httpGetAllIssues, httpCreateNewIssue } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
 issueRouter.get('/issues', httpGetAllIssues);
 
-issueRouter.post('/issues/new', createNewIssue);
+issueRouter.post('/issues/new', httpCreateNewIssue);
 
 module.exports = issueRouter;

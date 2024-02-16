@@ -1,11 +1,19 @@
 const express = require('express');
 
-const { httpGetAllIssues, httpCreateNewIssue } = require('../controller/issue.controller');
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
-issueRouter.get('/issues', httpGetAllIssues);
+const resource = 'issues';
 
-issueRouter.post('/issues/new', httpCreateNewIssue);
+issueRouter.get(`/${resource}`, httpGetAllIssues);
+
+issueRouter.get(`/${resource}/:id`, httpGetOneIssue);
+
+issueRouter.post(`/${resource}/new`, httpCreateNewIssue);
+
+issueRouter.put(`/${resource}/:id`, httpUpdateIssue);
+
+issueRouter.delete(`/${resource}/:id`, httpArchiveIssue);
 
 module.exports = issueRouter;

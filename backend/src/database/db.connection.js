@@ -9,9 +9,9 @@ const DATABASEPASSWORD = process.env.DATABASEPASSWORD;
 
 const pool = mysql.createPool({
     host: HOST,
-    user:USER,
+    user: USER,
     database: DATABASENAME,
-    password:DATABASEPASSWORD,
+    password: DATABASEPASSWORD,
 });
 
 module.exports = pool.promise();

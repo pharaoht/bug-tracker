@@ -1,6 +1,6 @@
-module.exports = class IssueValidator{
+class IssueValidator{
 
-    static validateInputString( body ) {
+    validateInputString( body ) {
 
         if(body == {}) throw new Error('Input must be a string');
         
@@ -24,3 +24,7 @@ module.exports = class IssueValidator{
     }
 
 };
+
+const issueValidator = new IssueValidator();
+
+module.exports = issueValidator;

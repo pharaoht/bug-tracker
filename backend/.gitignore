@@ -37,3 +37,6 @@ out/
 # Nuxt.js
 /dist/
 /.nuxt/
+
+cert.pem
+key.pem

@@ -1,24 +1,31 @@
 const IssueModel = require('../model/issue.model');
-const IssueValidator = require('../validator/issue.validator');
+const issueValidator = require('../validator/issue.validator');
+const issueDal = require('../dal/issue.dal');
 
 async function httpGetAllIssues(req, res) {
 
     const results = await IssueModel.modelGetAllIssues();
 
-    return res.status(200).json(results);
-}
+    const dto = issueDal.toDto(results);
+
+    return res.status(200).json({ data: dto });
+};
 
 async function httpCreateNewIssue(req, res) {
 
     const body = req.body;
 
     try{
-        const isvalid = IssueValidator.validateInputString(body);
+
+        issueValidator.validateInputString(body);
 
     }
     catch(err){
-        console.log(`Error: ${err.message}`)
-        return res.status(400).json({'error': err.message})
+
+        console.log(`Error: ${err.message}`);
+
+        return res.status(400).json({'error': err.message});
+
     }
 
     const { title, description } = body;
@@ -27,20 +34,108 @@ async function httpCreateNewIssue(req, res) {
 
     try{
 
-        const newIssue = await issue.modelCreateIssue();
+        await issue.modelCreateIssue();
 
-        return res.status(201)
+        return res.status(201);
 
     }
     catch(err){
-        console.log(`Error: ${err.message}`)
-        return res.status(400).json({'error': err.message})
+
+        console.log(`Error: ${err.message}`);
+
+        return res.status(400).json({'error': err.message});
+
     }
 
 };
+
+async function httpGetOneIssue(req, res, next){
+
+    const issueId = req.params.id;
+    
+    try {
+        
+        const results = await IssueModel.modelGetOneIssue(issueId);
+
+        const dto = issueDal.toDto(results);
+
+        return res.status(200).json({ data: dto });
+
+    } catch (error) {
+        
+        console.log(`Error: ${err.message}`);
+
+        return res.status(404).json({'error': err.message});
+
+    }
+
+    
+};
+
+async function httpUpdateIssue(req, res){
+
+    const issueId = req.params.id;
+
+    const body = req.body;
+
+    try{
+
+        issueValidator.validateInputString(body);
+
+    }
+    catch(err){
+
+        console.log(`Error: ${err.message}`);
+
+        return res.status(400).json({'error': err.message});
+
+    }
+
+    const issueData = {
+        id: issueId,
+        title: body.title,
+        description: body.description
+    };
+
+    try {
+        
+        await IssueModel.modelUpdateIssue(issueData);
+
+        return res.status(204)
+
+    } catch (error) {
+        
+        console.log(`Error: ${err.message}`);
+
+        return res.status(404).json({'error': err.message});
+
+    }
+}
+
+async function httpArchiveIssue(req, res){
+
+    const issueId = req.params.id;
+
+    try {
+        
+        await IssueModel.modelArchiveIssue(issueId);
+
+        return res.status(204)
+
+    } catch (error) {
+        
+        console.log(`Error: ${err.message}`);
+
+        return res.status(404).json({'error': err.message});
+
+    }
+}
 
 
 module.exports = {
     httpGetAllIssues,
     httpCreateNewIssue,
+    httpGetOneIssue,
+    httpUpdateIssue,
+    httpArchiveIssue
 }

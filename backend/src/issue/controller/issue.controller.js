@@ -1,10 +1,17 @@
-const IssueModel = require('../model/issue.model');
+const issueModel = require('../model/issue.model');
 const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
 
 async function httpGetAllIssues(req, res) {
 
-    const results = await IssueModel.modelGetAllIssues();
+    const { skip, limit } = req.query;
+
+    const issueObj = {
+        skip: skip,
+        limit: limit
+    }
+
+    const results = await issueModel.modelGetAllIssues(issueObj);
 
     const dto = issueDal.toDto(results);
 
@@ -30,11 +37,9 @@ async function httpCreateNewIssue(req, res) {
 
     const { title, description } = body;
 
-    const issue = new IssueModel(title, description);
-
     try{
 
-        await issue.modelCreateIssue();
+        await issueModel.modelCreateIssue(title, description);
 
         return res.status(201);
 
@@ -55,7 +60,7 @@ async function httpGetOneIssue(req, res, next){
     
     try {
         
-        const results = await IssueModel.modelGetOneIssue(issueId);
+        const results = await issueModel.modelGetOneIssue(issueId);
 
         const dto = issueDal.toDto(results);
 
@@ -99,7 +104,7 @@ async function httpUpdateIssue(req, res){
 
     try {
         
-        await IssueModel.modelUpdateIssue(issueData);
+        await issueModel.modelUpdateIssue(issueData);
 
         return res.status(204)
 
@@ -118,7 +123,7 @@ async function httpArchiveIssue(req, res){
 
     try {
         
-        await IssueModel.modelArchiveIssue(issueId);
+        await issueModel.modelArchiveIssue(issueId);
 
         return res.status(204)
 
@@ -131,11 +136,17 @@ async function httpArchiveIssue(req, res){
     }
 }
 
+async function httpSearchIssues(req, res){
+
+    const {} = req.query;
+}
+
 
 module.exports = {
     httpGetAllIssues,
     httpCreateNewIssue,
     httpGetOneIssue,
     httpUpdateIssue,
-    httpArchiveIssue
+    httpArchiveIssue,
+    httpSearchIssues
 }

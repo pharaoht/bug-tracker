@@ -6,7 +6,7 @@ module.exports = class IssueRepository{
         this._tableName = 'issue';
     }
     
-    static repoCreateIssue( issueDataModel ) {
+    repoCreateIssue( issueDataModel ) {
 
         const { title, description } = issueDataModel;
 
@@ -18,17 +18,34 @@ module.exports = class IssueRepository{
         return db.execute(query, [title, description])
     }
 
-    static repoGetAllIsues() {
+    repoGetAllIsues( issueObj ) {
+
+        const { skip, limit } = issueObj;
+
+        const pageSkip = Math.abs(skip) || 1;
+
+        const pageLimit = Math.abs(limit) || 10;
 
         const query = `
-            SELECT *
-            FROM issue
+            WITH PagedIssues AS (
+            SELECT 
+                *,
+                ROW_NUMBER() OVER (ORDER BY createdAt DESC) AS rowNum,
+                COUNT(*) OVER () AS totalCount
+            FROM ${this._tableName}
+            )
+            SELECT 
+            *,
+            CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
+            CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
+            FROM PagedIssues
+            WHERE RowNum BETWEEN ? AND ?;
         `;
 
-        return db.execute(query);
+        return db.execute(query, [ pageLimit, pageLimit, pageSkip, pageLimit ]);
     }
 
-    static repoGetOneIssue( issueId ){
+    repoGetOneIssue( issueId ){
 
         const id = issueId;
 
@@ -41,7 +58,7 @@ module.exports = class IssueRepository{
         return db.execute(query, [id]);
     }
 
-    static repoUpdateIssue( issueBody ){
+    repoUpdateIssue( issueBody ){
 
         const { id, title, description } = issueBody;
 

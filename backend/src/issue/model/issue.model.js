@@ -1,6 +1,6 @@
 const IssueRepository = require('../repository/issue.repository');
 
-module.exports = class Issue extends IssueRepository{
+class Issue extends IssueRepository{
 
     constructor(title, description,){
         super();
@@ -8,36 +8,38 @@ module.exports = class Issue extends IssueRepository{
         this.description = description;
     }
 
-    modelCreateIssue(){
-
-        const issueDataObj = {
-            title: this.title,
-            description: this.description
-        };
-
-        return this.repoCreateIssue(issueDataObj);
+    modelCreateIssue(title, description){
+        const issueData = {
+            title: title,
+            description: description
+        }
+        return this.repoCreateIssue(issueData);
     }
 
-    static modelUpdateIssue( issueBody ){ 
+    modelUpdateIssue( issueBody ){ 
 
         return this.repoUpdateIssue(issueBody);
     };
 
     
-    static modelGetAllIssues() { 
+    modelGetAllIssues( issueObj ) { 
         
-        return this.repoGetAllIsues();
+        return this.repoGetAllIsues( issueObj);
     };
     
-    static modelGetOneIssue(id) { 
+    modelGetOneIssue(id) { 
         
         return this.repoGetOneIssue(id);
     };
     
-    static modelArchiveIssue(id) { };
-    static searchIssue() { };
+    modelArchiveIssue(id) { };
+    searchIssue() { };
 
-}
+};
+
+
+const issueModel = new Issue();
+module.exports = issueModel;
 
 
 // Issue Model

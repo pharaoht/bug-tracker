@@ -16,6 +16,8 @@ const authRouter = require('./auth/routes/auth.routes');
 
 const issueRouter = require('./issue/routes/issue.routes');
 
+const userRouter = require('./user/routes/user.routes');
+
 const app = express();
 
 app.use(cors({ origin: '*', }));
@@ -31,5 +33,7 @@ app.use(passport.session());
 app.use(authRouter);
 
 app.use(issueRouter);
+
+app.use(userRouter);
 
 module.exports = app;

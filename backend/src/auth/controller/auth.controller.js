@@ -22,7 +22,6 @@ async function httpOAuthCallback(req, res, next) {
     })(req, res, next);
 }
 
-
 async function httpLogout(req, res){
 
     req.logout();

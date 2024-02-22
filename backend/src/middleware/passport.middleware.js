@@ -5,14 +5,15 @@ const passport = require('passport');
 const { Strategy } = require('passport-google-oauth2');
 
 function verifyCallback(accesToken, refreshToken, profile, done){
-    console.log(profile)
-    //save user to db here
-    done(null, profile);
+
+    const { email, given_name, family_name } = profile;
+
+    done(null, {email, given_name, family_name});
 };
 
 passport.use(new Strategy(
     {
-        callbackURL: '/auth/google/callback',
+        callbackURL: '/api/auth/google/callback',
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
@@ -21,9 +22,11 @@ passport.use(new Strategy(
 ));
 
 passport.serializeUser((user, done) => {
+
     done(null, user)
 });
 
 passport.deserializeUser((obj, done) => {
+
     done(null, obj)
 })

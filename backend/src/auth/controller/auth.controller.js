@@ -11,11 +11,13 @@ function httpOAuthLogin(req, res, next){
 
 async function httpOAuthCallback(req, res, next) {
 
+    const { email, given_name, family_name} = req.user;
+
     passport.authenticate('google', {
 
-        failureRedirect: '/auth/failure',
+        failureRedirect: '/api/auth/failure',
 
-        successRedirect: '/issues',
+        successRedirect: `/api/users/new?email=${email}&givenName=${given_name}&familyName=${family_name}`,
 
         session: true,
 

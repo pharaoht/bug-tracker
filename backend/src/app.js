@@ -30,10 +30,14 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use(authRouter);
+const apiRouter = express.Router();
 
-app.use(issueRouter);
+app.use('/api', apiRouter);
 
-app.use(userRouter);
+apiRouter.use(authRouter);
+
+apiRouter.use(issueRouter);
+
+apiRouter.use(userRouter);
 
 module.exports = app;

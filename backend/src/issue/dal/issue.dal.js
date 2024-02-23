@@ -21,6 +21,7 @@ class IssueDataAccessLayer {
                 id: itm[this.id],
                 title: itm[this.title],
                 description: itm[this.description],
+                status: itm[this.status],
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY')
             }
 

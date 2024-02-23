@@ -1,6 +1,7 @@
 'use client'
 import useHttp from '@/hooks/useHttp'
 import React, { useEffect, useState } from 'react'
+import styles from './sidebar.module.css';
 
 export const Sidebar = () => {
 
@@ -33,11 +34,17 @@ export const Sidebar = () => {
     }, []);
 
     return (
-        <div className=''>
-            <h2>Users contributing</h2>
-            <ul>
-                {users.length > 0 && renderUsers()}
-            </ul>
+        <div className={styles.container}>
+            <div className={styles.headerContainer}>
+                <h2 className={styles.headerText}>Users Contributing</h2>
+            </div>
+
+            {isLoading ? <>Loading...</> :
+                <ul>
+                    {users.length > 0 && renderUsers()}
+                </ul>
+            }
+
         </div>
     )
 }

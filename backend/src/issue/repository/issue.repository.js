@@ -8,14 +8,14 @@ module.exports = class IssueRepository{
     
     repoCreateIssue( issueDataModel ) {
 
-        const { title, description } = issueDataModel;
+        const { title, description, userId } = issueDataModel;
 
         const query = ` 
-            INSERT INTO issue (title, description, status) 
-            VALUES (?,?,'OPEN')
+            INSERT INTO issue (title, description, status, user_id) 
+            VALUES (?,?,'OPEN',?)
         `;
 
-        return db.execute(query, [title, description])
+        return db.execute(query, [title, description, userId])
     }
 
     repoGetAllIsues( issueObj ) {
@@ -60,17 +60,18 @@ module.exports = class IssueRepository{
 
     repoUpdateIssue( issueBody ){
 
-        const { id, title, description } = issueBody;
+        const { id, title, description, status } = issueBody;
 
         const query = `
             UPDATE issue
             SET
                 title = ?,
                 description = ?
+                status = ?
             WHERE
                 id = ?
         `;
 
-        return db.execute(query, [title, description, id]);
+        return db.execute(query, [title, description, status, id]);
     }
 }

@@ -2,16 +2,18 @@ const IssueRepository = require('../repository/issue.repository');
 
 class Issue extends IssueRepository{
 
-    constructor(title, description,){
+    constructor(title, description, userId){
         super();
         this.title = title;
         this.description = description;
+        this.userId = userId;
     }
 
     modelCreateIssue(title, description){
         const issueData = {
             title: title,
-            description: description
+            description: description,
+            userId: userId
         }
         return this.repoCreateIssue(issueData);
     }

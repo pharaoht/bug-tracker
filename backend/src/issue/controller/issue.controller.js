@@ -15,7 +15,7 @@ async function httpGetAllIssues(req, res) {
 
     const dto = issueDal.toDto(results);
 
-    return res.status(200).json({ data: dto });
+    return res.status(200).json(dto);
 };
 
 async function httpCreateNewIssue(req, res) {
@@ -35,11 +35,11 @@ async function httpCreateNewIssue(req, res) {
 
     }
 
-    const { title, description } = body;
+    const { title, description, userId } = body;
 
     try{
 
-        await issueModel.modelCreateIssue(title, description);
+        await issueModel.modelCreateIssue(title, description, userId);
 
         return res.status(201);
 
@@ -64,7 +64,7 @@ async function httpGetOneIssue(req, res, next){
 
         const dto = issueDal.toDto(results);
 
-        return res.status(200).json({ data: dto });
+        return res.status(200).json(dto);
 
     } catch (error) {
         
@@ -99,7 +99,8 @@ async function httpUpdateIssue(req, res){
     const issueData = {
         id: issueId,
         title: body.title,
-        description: body.description
+        description: body.description,
+        status: body.status
     };
 
     try {

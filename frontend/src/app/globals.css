@@ -1,8 +1,10 @@
 *{
     margin: 0;
     text-decoration: none;
+        list-style: none;
 }
 
 :root {
     --lilac: #6B4C90;
 }
+

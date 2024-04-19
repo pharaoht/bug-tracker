@@ -14,7 +14,7 @@ issueRouter.get(`${resource}/search`, httpSearchIssues);
 
 issueRouter.get(`${resource}/:id`, httpGetOneIssue);
 
-issueRouter.post(`${resource}/new`, httpCreateNewIssue);
+issueRouter.post(`${resource}/new`, isLoginMiddlware, httpCreateNewIssue);
 
 issueRouter.put(`${resource}/:id`, isLoginMiddlware, httpUpdateIssue);
 

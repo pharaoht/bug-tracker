@@ -74,4 +74,13 @@ module.exports = class IssueRepository{
 
         return db.execute(query, [title, description, status, id]);
     }
+
+    repoSearchIssues(){
+
+        const query = `
+            SELECT *
+            FROM issues
+            WHERE MATCH(title, description) AGAINST ('your_search_term');
+        `;
+    }
 }

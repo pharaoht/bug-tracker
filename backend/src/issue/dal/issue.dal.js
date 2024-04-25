@@ -32,14 +32,6 @@ class IssueDataAccessLayer {
     };
 
     fromDto ( data ){
-
-        return {
-            [this.title]: data.title || '',
-            [this.status]: data.status || '',
-            [this.description]: data.description || '',
-            [this.createdAt]: data.createdAt || '',
-            usserId: data.userId,
-        }
     }
 };
 

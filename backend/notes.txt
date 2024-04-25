@@ -3,3 +3,7 @@ Testing in node:
     -Test fixures (describe)
     -Assertions (expect)
     -Mocking
+
+
+Github Actions: Defines our continuous integration pipeline, in these workflows files which the yml syntax
+to list out different jobs that need to be performed when some action is triggered on your github repo

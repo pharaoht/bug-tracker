@@ -1,10 +1,10 @@
 const passport = require('passport');
 
-function httpOAuthLogin(req, res, next){
+async function httpOAuthLogin(req, res, next){
 
     passport.authenticate('google', 
         {
-            scope: ['email', 'profile']
+            scope: ['email','profile'],
         }
     )(req, res, next);
 };
@@ -16,9 +16,7 @@ async function httpOAuthCallback(req, res, next) {
     passport.authenticate('google', {
 
         failureRedirect: '/api/auth/failure',
-
         successRedirect: `/api/users/new?email=${email}&givenName=${given_name}&familyName=${family_name}`,
-
         session: true,
 
     })(req, res, next);

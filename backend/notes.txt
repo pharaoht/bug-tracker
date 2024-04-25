@@ -1,0 +1,5 @@
+Testing in node:
+    -Test Runner (jest)
+    -Test fixures (describe)
+    -Assertions (expect)
+    -Mocking

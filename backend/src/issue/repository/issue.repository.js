@@ -75,12 +75,16 @@ module.exports = class IssueRepository{
         return db.execute(query, [title, description, status, id]);
     }
 
-    repoSearchIssues(){
+    repoSearchIssues( searchTerm ){
 
         const query = `
             SELECT *
-            FROM issues
-            WHERE MATCH(title, description) AGAINST ('your_search_term');
+            FROM ${this._tableName}
+            WHERE CONCAT(title, ' ', description) LIKE ?;
         `;
+
+        const searchTermWithWildcards = '%' + searchTerm + '%';
+
+        return db.execute(query, [searchTermWithWildcards])
     }
 }

@@ -30,6 +30,9 @@ class IssueDataAccessLayer {
         return dto;
 
     };
+
+    fromDto ( data ){
+    }
 };
 
 const issueDal = new IssueDataAccessLayer();

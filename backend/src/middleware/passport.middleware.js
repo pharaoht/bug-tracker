@@ -21,12 +21,14 @@ passport.use(new Strategy(
 
 ));
 
+//save session to cookie
 passport.serializeUser((user, done) => {
 
     done(null, user)
 });
 
+//Read the session from cookie
 passport.deserializeUser((obj, done) => {
-
+    
     done(null, obj)
 })

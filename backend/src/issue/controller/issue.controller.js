@@ -26,18 +26,7 @@ async function httpCreateNewIssue(req, res) {
 
         issueValidator.validateInputString(body);
 
-    }
-    catch(err){
-
-        console.log(`Error: ${err.message}`);
-
-        return res.status(400).json({'error': err.message});
-
-    }
-
-    const { title, description, userId } = body;
-
-    try{
+        const { title, description, userId } = body;
 
         await issueModel.modelCreateIssue(title, description, userId);
 
@@ -139,8 +128,30 @@ async function httpArchiveIssue(req, res){
 
 async function httpSearchIssues(req, res){
 
-    const {} = req.query;
+    if(Object.keys(req.query).length === 0){
+        return res.status(400).json({ error:'Please provide a search term'})
+    }
+
+    try{
+
+        const { searchTerm } = req.query;
+       
+        const results = await issueModel.modelSearchIssues(searchTerm);
+
+        const dto = issueDal.toDto(results);
+
+        return res.status(200).json(dto)
+        
+    }
+    catch(error){
+        return res.status(400).json({ error:'Something went wrong'})
+    }
+
 }
+
+async function httpSortIssues(req, res){
+
+};
 
 
 module.exports = {
@@ -149,5 +160,6 @@ module.exports = {
     httpGetOneIssue,
     httpUpdateIssue,
     httpArchiveIssue,
-    httpSearchIssues
+    httpSearchIssues,
+    httpSortIssues
 }

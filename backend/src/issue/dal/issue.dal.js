@@ -30,6 +30,17 @@ class IssueDataAccessLayer {
         return dto;
 
     };
+
+    fromDto ( data ){
+
+        return {
+            [this.title]: data.title || '',
+            [this.status]: data.status || '',
+            [this.description]: data.description || '',
+            [this.createdAt]: data.createdAt || '',
+            usserId: data.userId,
+        }
+    }
 };
 
 const issueDal = new IssueDataAccessLayer();

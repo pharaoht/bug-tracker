@@ -35,7 +35,9 @@ class Issue extends IssueRepository{
     };
     
     modelArchiveIssue(id) { };
-    searchIssues() { };
+    modelSearchIssues( issueObj ) { 
+        return this.repoSearchIssues(issueObj)
+    };
 
 };
 

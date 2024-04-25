@@ -139,7 +139,19 @@ async function httpArchiveIssue(req, res){
 
 async function httpSearchIssues(req, res){
 
-    const {} = req.query;
+    if(Object.keys(req.query).length === 0){
+        return res.status(400).json({ error:'Please provide a search term'})
+    }
+
+    try{
+
+        const dto = issueDal.fromDto(req.query);
+    }
+    catch(error){
+
+    }
+
+    return res.status(200).json({success: '200'})
 }
 
 

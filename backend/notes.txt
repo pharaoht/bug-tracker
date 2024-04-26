@@ -7,3 +7,6 @@ Testing in node:
 
 Github Actions: Defines our continuous integration pipeline, in these workflows files which the yml syntax
 to list out different jobs that need to be performed when some action is triggered on your github repo
+
+ docker build . -t ptmdev/bug-tracker
+docker run -it -p 8000:8000 ptmdev/bug-tracker

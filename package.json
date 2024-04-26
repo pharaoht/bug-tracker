@@ -6,7 +6,7 @@
   "scripts": {
     "install-server":"npm install --prefix backend",
     "install":"npm run install-server",
-    "server":"npm run watch --prefix backend",
+    "server":"npm run --prefix backend",
     "watch": "npm run server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "note":"&& run and waits to finish & run both without waiting"

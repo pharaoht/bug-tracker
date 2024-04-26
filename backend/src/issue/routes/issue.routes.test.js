@@ -16,7 +16,6 @@ describe('Issues API', () => {
                     .get('/api/issues')
                     .expect(200)
 
-                return
             });
         });
 
@@ -28,7 +27,6 @@ describe('Issues API', () => {
                     .get('/api/issues/1')
                     .expect(200)
 
-                return
             })
 
         });
@@ -53,7 +51,10 @@ describe('Issues API', () => {
 
             test('It should return status code 401 Unauthorized when user is not authenticated', async () => {
 
-    
+                const response = await request(app)
+                    .post('/api/issues/new')
+                    .send(invalidData)
+                    .expect(401)
             });
 
             test('It should return status code 400 Bad Request when user gives invalid data to create new issue', async () => {

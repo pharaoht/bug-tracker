@@ -2,6 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+ARG HOST
+ENV HOST=$HOST
+
 COPY package.json ./
 
 COPY backend/package.json backend/

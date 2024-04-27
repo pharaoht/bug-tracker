@@ -27,6 +27,9 @@ COPY package.json ./
 COPY backend/package.json backend/
 RUN npm run install --omit=dev
 
+RUN apk add --no-cache mysql-client
+COPY backend/src/database/scripts/create.scripts.sql /docker-entrypoint-initdb.d/
+
 COPY backend/ backend/
 
 USER node

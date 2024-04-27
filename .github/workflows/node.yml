@@ -31,4 +31,12 @@ jobs:
           tags: your-image-name:latest
           build-args: |
             NODE_VERSION=20
-            HOST=${{ secrets.HOST }}
+            HOST=${{ vars.HOST }}
+            USER=${{ vars.USER }}
+            GOOGLE_CLIENT_SECRET=${{ vars.GOOGLE_CLIENT_SECRET }}
+            GOOGLE_CLIENT_ID=${{ vars.GOOGLE_CLIENT_ID }}
+            DATABASEPASSWORD=${{ vars.DATABASEPASSWORD }}
+            DATABASENAME=${{ vars.DATABASENAME}}
+            COOKIE_NAME=${{ vars.COOKIE_NAME }}
+            COOKIE_KEY_TWO=${{ vars.COOKIE_KEY_TWO }}
+            COOKIE_KEY_ONE=${{ vars.COOKIE_KEY_ONE }}

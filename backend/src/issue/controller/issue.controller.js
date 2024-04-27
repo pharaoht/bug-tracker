@@ -11,11 +11,20 @@ async function httpGetAllIssues(req, res) {
         limit: limit
     }
 
-    const results = await issueModel.modelGetAllIssues(issueObj);
+    try{
+        const results = await issueModel.modelGetAllIssues(issueObj);
 
-    const dto = issueDal.toDto(results);
+        const dto = issueDal.toDto(results);
 
-    return res.status(200).json(dto);
+        return res.status(200).json(dto);
+    }
+    catch(err){
+        console.log(err)
+        console.error(err.message)
+        return res.status(400).json({error:'something went wrong'})
+    }
+
+
 };
 
 async function httpCreateNewIssue(req, res) {

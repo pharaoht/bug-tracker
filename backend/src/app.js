@@ -2,12 +2,12 @@ const express = require('express');
 
 const cors = require('cors');
 
-require('./middleware/passport.middleware');
-
 const passport = require('passport');
 
 //Middleware
 const setUpCookieMiddleware = require('./middleware/cookie.middleware');
+
+require('./middleware/passport.middleware');
 
 const isLoginMiddlware = require('./middleware/login.middleware');
 

@@ -19,8 +19,7 @@ async function httpGetAllIssues(req, res) {
         return res.status(200).json(dto);
     }
     catch(err){
-        console.log(err)
-        console.error(err.message)
+
         return res.status(400).json({error:'something went wrong'})
     }
 
@@ -64,7 +63,7 @@ async function httpGetOneIssue(req, res, next){
 
         return res.status(200).json(dto);
 
-    } catch (error) {
+    } catch (err) {
         
         console.log(`Error: ${err.message}`);
 

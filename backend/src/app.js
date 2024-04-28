@@ -11,6 +11,8 @@ require('./middleware/passport.middleware');
 
 const isLoginMiddlware = require('./middleware/login.middleware');
 
+const errorCatchMiddleWare = require('./middleware/errorHandler.middleware');
+
 //Routes
 const authRouter = require('./auth/routes/auth.routes');
 
@@ -29,6 +31,8 @@ app.use(setUpCookieMiddleware());
 app.use(passport.initialize());
 
 app.use(passport.session());
+
+app.use(errorCatchMiddleWare);
 
 const apiRouter = express.Router();
 

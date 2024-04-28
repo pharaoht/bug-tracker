@@ -24,7 +24,13 @@ async function httpCreateUser(req, res){
     const { email, given_name, family_name } = req.session.passport.user;
 
     let isExist = null;
-    console.log(email, given_name, family_name)
+
+    if(!email){
+
+        const error = new Error('no email was provided');
+        next(error)
+    } 
+
     try{
 
         isExist = await User.modelCheckIfUserExist(email);

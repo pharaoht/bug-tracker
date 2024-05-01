@@ -4,11 +4,10 @@ const passport = require('passport');
 
 const { Strategy } = require('passport-google-oauth2');
 
-function verifyCallback(accesToken, refreshToken, profile, done){
+async function verifyCallback(accesToken, refreshToken, profile, done){
 
     const { email, given_name, family_name } = profile;
-
-    done(null, {email, given_name, family_name});
+    done(null, profile);
 };
 
 passport.use(new Strategy(
@@ -18,12 +17,10 @@ passport.use(new Strategy(
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
     verifyCallback
-
 ));
 
 //save session to cookie
 passport.serializeUser((user, done) => {
-
     done(null, user)
 });
 
@@ -32,3 +29,4 @@ passport.deserializeUser((obj, done) => {
     
     done(null, obj)
 })
+

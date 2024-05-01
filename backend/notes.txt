@@ -10,3 +10,25 @@ to list out different jobs that need to be performed when some action is trigger
 
  docker build . -t ptmdev/bug-tracker
 docker run -it -p 8000:8000 ptmdev/bug-tracker
+
+
+
+Javascript is a single threaded language.
+Javascript is a intrepret language. (Depends on the implentation)
+
+
+With an interpreter, we translate and read the files line by line on the fly
+Compiler is like an interpreter, but doesnt translate on the fly. Worked ahead of time to create a translation of what code we've just written
+
+Con of interpreter is that it can get slow over time after many iterations
+Con of Compiler is that, it takes longer to get up and running because it has to read the code first before executing
+
+Pro of Compiler is that it will eventually run faster with many iterations, it optimizes the code
+
+
+
+Javascript Engine (Jit Compiler, best of both worlds)
+
+Parser -> Abstract Syntax Tree (AST) -> Interpreter -> Profiler -> Compiler -> Optimized code
+                                            |
+                                        bytecode

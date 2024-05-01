@@ -3,7 +3,7 @@ const db = require('../../database/db.connection');
 module.exports = class UserRepository{
 
     constructor(){
-        this.tableName = 'user'
+        this.tableName = 'users'
     }
 
     repoCreateUser( userModel ){
@@ -11,7 +11,7 @@ module.exports = class UserRepository{
         const { email, givenName, familyName } = userModel;
 
         const query = ` 
-            INSERT INTO ${this.tableName} (email, givenName, family) 
+            INSERT INTO ${this.tableName} (email, firstName, lastName) 
             VALUES (?, ?, ?)
         `;
 
@@ -22,7 +22,7 @@ module.exports = class UserRepository{
 
         const query = `
             SELECT COUNT(*) AS emailExists
-            FROM user
+            FROM users
             WHERE email = ?
 
         `;
@@ -34,7 +34,7 @@ module.exports = class UserRepository{
 
         const query = `
             SELECT *
-            FROM user
+            FROM users
             WHERE email = ?
         `;
 
@@ -53,7 +53,7 @@ module.exports = class UserRepository{
                 *,
                 ROW_NUMBER() OVER (ORDER BY createdAt DESC) AS rowNum,
                 COUNT(*) OVER () AS totalCount
-            FROM user
+            FROM users
             )
             SELECT 
             *,

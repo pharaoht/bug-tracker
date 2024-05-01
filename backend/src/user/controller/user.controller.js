@@ -21,9 +21,15 @@ async function httpGetAllUsers(req, res){
 
 async function httpCreateUser(req, res){
 
-    const { email, givenName, familyName } = req.query;
+    const { email, given_name, family_name } = req.session.passport.user;
 
     let isExist = null;
+
+    if(!email){
+
+        const error = new Error('no email was provided');
+        next(error)
+    } 
 
     try{
 
@@ -38,7 +44,7 @@ async function httpCreateUser(req, res){
 
     if(isExist[0][0].emailExists === 0){
 
-        const newUser = new User(email, givenName, familyName);
+        const newUser = new User(email, given_name, family_name);
 
         try {
             
@@ -52,7 +58,13 @@ async function httpCreateUser(req, res){
 
     }
 
-    return res.redirect(`/api/users/${email}`);
+    const userInfo = {
+        email: email,
+        firstName: given_name,
+        lastName: family_name
+    }
+
+    return res.status(200).json({data: userInfo})
 
 };
 

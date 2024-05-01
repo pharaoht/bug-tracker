@@ -4,8 +4,8 @@ class UserDataAccessLayer {
 
     constructor(){
         this.id = 'id'
-        this.givenName = 'givenName'
-        this.family = 'family'
+        this.firstName = 'firstName'
+        this.lastName = 'lastName'
         this.email = 'email'
         this.createdAt = 'createdAt'
         this.updatedAt = 'updatedAt'
@@ -22,7 +22,7 @@ class UserDataAccessLayer {
 
             return {
                 id: itm[this.id],
-                name: `${itm[this.givenName]} ${itm[this.family]}`,
+                name: `${itm[this.firstName]} ${itm[this.lastName]}`,
                 email: itm[this.email],
                 isAdmin: admin,
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY')

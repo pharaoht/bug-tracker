@@ -9,6 +9,9 @@ class IssueDataAccessLayer {
         this.status = 'status'
         this.createdAt = 'createdAt'
         this.updatedAt = 'updatedAt'
+        this.userId = 'user_id'
+        this.firstName = 'firstName'
+        this.lastName = 'lastName'
     }
 
     toDto( data ){
@@ -22,7 +25,9 @@ class IssueDataAccessLayer {
                 title: itm[this.title],
                 description: itm[this.description],
                 status: itm[this.status],
-                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY')
+                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY'),
+                userId: itm[this.userId],
+                createdBy: `${itm[this.firstName]}, ${itm[this.lastName]}`,
             }
 
         });

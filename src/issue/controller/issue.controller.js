@@ -152,6 +152,7 @@ async function httpSearchIssues(req, res){
         
     }
     catch(error){
+        console.log(error)
         return res.status(400).json({ error:'Something went wrong'})
     }
 

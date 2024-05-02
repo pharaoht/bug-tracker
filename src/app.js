@@ -2,6 +2,8 @@ const express = require('express');
 
 const cors = require('cors');
 
+const path = require('path');
+
 const passport = require('passport');
 
 //Middleware
@@ -43,5 +45,10 @@ apiRouter.use(authRouter);
 apiRouter.use(issueRouter);
 
 apiRouter.use(userRouter);
+
+app.get('/' , (req, res) => {
+
+    res.sendFile(path.join(__dirname, 'html', 'verify.html'))
+});
 
 module.exports = app;

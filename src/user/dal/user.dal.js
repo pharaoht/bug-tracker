@@ -18,12 +18,11 @@ class UserDataAccessLayer {
 
         const dto = userData.map((itm, idx) => {
 
-            const admin = itm[this.isAdmin] === 0 ? false : true;
+            const admin = itm[this.id] === 1 ? true : false;
 
             return {
                 id: itm[this.id],
                 name: `${itm[this.firstName]} ${itm[this.lastName]}`,
-                email: itm[this.email],
                 isAdmin: admin,
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY')
             }

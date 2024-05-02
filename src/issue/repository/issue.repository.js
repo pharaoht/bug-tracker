@@ -37,7 +37,7 @@ module.exports = class IssueRepository{
                 users.id as user__id,
                 users.firstName as firstName,
                 users.lastName as lastName,
-                ROW_NUMBER() OVER (ORDER BY createdAt DESC) AS rowNum,
+                ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
                 COUNT(*) OVER () AS totalCount
             FROM ${this._tableName}
             JOIN users ON issue.user_id = users.id
@@ -64,10 +64,10 @@ module.exports = class IssueRepository{
         const id = issueId;
 
         const query = `
-            select *
-            from issue
+            SELECT *
+            FROM issue
             JOIN users on issue.user_id = users.id
-            Where issue.id = ?
+            WHERE issue.id = ?
         `;
 
         return db.execute(query, [id]);

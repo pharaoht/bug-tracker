@@ -19,7 +19,7 @@ async function httpGetAllIssues(req, res) {
         return res.status(200).json(dto);
     }
     catch(err){
-
+        console.log(err)
         return res.status(400).json({error:'something went wrong'})
     }
 

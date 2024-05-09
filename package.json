@@ -8,6 +8,7 @@
         "cluster": "pm2 start src/server.js -i max"
     },
     "dependencies": {
+        "cloudinary": "^2.2.0",
         "cookie-session": "^2.1.0",
         "cors": "^2.8.5",
         "dotenv": "^16.4.4",

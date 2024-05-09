@@ -27,33 +27,42 @@ module.exports = class IssueRepository{
         const pageLimit = Math.abs(limit) || 10;
 
         const query = `
-            WITH PagedIssues AS (
-            SELECT 
-                issue.id as issue_id,
-                title,
-                description,
-                status,
-                user_id,
-                users.id as user__id,
-                users.firstName as firstName,
-                users.lastName as lastName,
-                ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
-                COUNT(*) OVER () AS totalCount
-            FROM ${this._tableName}
-            JOIN users ON issue.user_id = users.id
-            )
-            SELECT 
-                issue_id,
-                title,
-                description,
-                status,
-                user_id,
-                firstName,
-                lastName,
-            CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
-            CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
-            FROM PagedIssues
-            WHERE RowNum BETWEEN ? AND ?;
+                WITH PagedIssues AS (
+                SELECT 
+                    issue.id as issue_id,
+                    title,
+                    description,
+                    status,
+                    priority,
+                    issue.createdAt,
+                    user_id,
+                    users.id as user__id,
+                    users.firstName as firstName,
+                    users.lastName as lastName,
+                    teams.name as teamName,
+                    teams.id as team_id,
+                    ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
+                    COUNT(*) OVER () AS totalCount
+                FROM ${this._tableName}
+                JOIN users ON issue.user_id = users.id
+                JOIN teams ON issue.team_id = teams.id
+                )
+                SELECT 
+                    issue_id,
+                    title,
+                    description,
+                    status,
+                    priority,
+                    createdAt,
+                    user_id,
+                    firstName,
+                    lastName,
+                    teamName, 
+                    team_id,
+                CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
+                CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
+                FROM PagedIssues
+                WHERE RowNum BETWEEN ? AND ?;
         `;
 
         return db.execute(query, [ pageLimit, pageLimit, pageSkip, pageLimit ]);

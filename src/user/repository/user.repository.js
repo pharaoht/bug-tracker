@@ -49,16 +49,18 @@ module.exports = class UserRepository{
 
         const query = `
             WITH PagedUsers AS (
-            SELECT 
-                *,
-                ROW_NUMBER() OVER (ORDER BY createdAt DESC) AS rowNum,
-                COUNT(*) OVER () AS totalCount
-            FROM users
+                SELECT 
+                    u.*, -- Select all columns from users
+                    t.name AS teamName,
+                    ROW_NUMBER() OVER (ORDER BY u.createdAt DESC) AS rowNum,
+                    COUNT(*) OVER () AS totalCount
+                FROM users u
+                LEFT JOIN teams t ON u.team_id = t.id
             )
             SELECT 
-            *,
-            CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
-            CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
+                *,
+                CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
+                CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
             FROM PagedUsers
             WHERE RowNum BETWEEN ? AND ?;
         `;

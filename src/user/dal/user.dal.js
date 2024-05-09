@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { capitalizeFirstLetter } = require('../../util/index')
 
 class UserDataAccessLayer {
 
@@ -22,7 +23,7 @@ class UserDataAccessLayer {
 
             return {
                 id: itm[this.id],
-                name: `${itm[this.firstName]} ${itm[this.lastName]}`,
+                name: `${capitalizeFirstLetter(itm[this.firstName])} ${capitalizeFirstLetter(itm[this.lastName])}`,
                 isAdmin: admin,
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY')
             }

@@ -16,7 +16,7 @@ async function httpGetAllIssues(req, res) {
 
         const dto = issueDal.toDto(results);
 
-        return res.status(200).json({data: dto});
+        return res.status(200).json(dto);
     }
     catch(err){
         console.log(err)
@@ -61,7 +61,7 @@ async function httpGetOneIssue(req, res, next){
 
         const dto = issueDal.toDto(results);
 
-        return res.status(200).json({data: dto});
+        return res.status(200).json(dto);
 
     } catch (err) {
         
@@ -148,7 +148,7 @@ async function httpSearchIssues(req, res){
 
         const dto = issueDal.toDto(results);
 
-        return res.status(200).json({data: dto});
+        return res.status(200).json(dto)
         
     }
     catch(error){

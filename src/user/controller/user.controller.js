@@ -14,7 +14,7 @@ async function httpGetAllUsers(req, res){
 
     const dto = userDal.toDto(results);
 
-    return res.status(200).json({data: dto});
+    return res.status(200).json(dto);
 
 
 };
@@ -79,7 +79,7 @@ async function httpGetUserByEmail(req, res){
         //dal
         const dto = userDal.toDto(results);
 
-        return res.status(200).json({data: dto});
+        return res.status(200).json(dto)
         
     } catch (error) {
 

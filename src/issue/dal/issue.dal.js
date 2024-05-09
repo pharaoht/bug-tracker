@@ -13,6 +13,9 @@ class IssueDataAccessLayer {
         this.userId = 'user_id'
         this.firstName = 'firstName'
         this.lastName = 'lastName'
+        this.priority = 'priority'
+        this.teamName = 'teamName'
+        this.teamId = 'team_id'
     }
 
     toDto( data ){
@@ -26,7 +29,10 @@ class IssueDataAccessLayer {
                 title: itm[this.title],
                 description: itm[this.description],
                 status: itm[this.status],
+                priority: itm[this.priority],
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY'),
+                team: itm[this.teamName],
+                teamId: itm[this.teamId],
                 userId: itm[this.userId],
                 createdBy: `${capitalizeFirstLetter(itm[this.firstName])}, ${capitalizeFirstLetter(itm[this.lastName])}`,
             }

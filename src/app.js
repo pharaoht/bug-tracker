@@ -6,6 +6,8 @@ const path = require('path');
 
 const passport = require('passport');
 
+const serverLogger = require('./middleware/logger.middleware');
+
 //Middleware
 const setUpCookieMiddleware = require('./middleware/cookie.middleware');
 
@@ -22,6 +24,8 @@ const issueRouter = require('./issue/routes/issue.routes');
 
 const userRouter = require('./user/routes/user.routes');
 
+const teamRouter = require('./team/routes/team.routes');
+
 const app = express();
 
 app.use(cors({ origin: '*', }));
@@ -34,6 +38,8 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
+app.use(serverLogger);
+
 app.use(errorCatchMiddleWare);
 
 const apiRouter = express.Router();
@@ -45,6 +51,8 @@ apiRouter.use(authRouter);
 apiRouter.use(issueRouter);
 
 apiRouter.use(userRouter);
+
+apiRouter.use(teamRouter);
 
 app.get('/' , (req, res) => {
 

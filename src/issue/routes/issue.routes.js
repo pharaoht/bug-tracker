@@ -2,7 +2,7 @@ const express = require('express');
 
 const isLoginMiddlware = require('../../middleware/login.middleware');
 
-const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues } = require('../controller/issue.controller');
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
@@ -15,6 +15,8 @@ issueRouter.get(`${resource}/search`, httpSearchIssues);
 issueRouter.get(`${resource}/sort`, httpSortIssues);
 
 issueRouter.get(`${resource}/:id`, httpGetOneIssue);
+
+issueRouter.get(`${resource}/user/:id`, httpGetIssuesByUserId)
 
 issueRouter.post(`${resource}/new`, isLoginMiddlware, httpCreateNewIssue);
 

@@ -160,7 +160,25 @@ async function httpSearchIssues(req, res){
 
 async function httpSortIssues(req, res){
 
+    try{
+
+    }
+    catch(error){
+
+    }
 };
+
+async function httpGetIssuesByUserId(req, res){
+
+    const userId = req.params.id;
+
+    try{
+
+    }
+    catch(error){
+
+    }
+}
 
 
 module.exports = {
@@ -170,5 +188,6 @@ module.exports = {
     httpUpdateIssue,
     httpArchiveIssue,
     httpSearchIssues,
-    httpSortIssues
+    httpSortIssues,
+    httpGetIssuesByUserId
 }

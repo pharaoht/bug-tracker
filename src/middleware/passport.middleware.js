@@ -26,7 +26,6 @@ passport.serializeUser((user, done) => {
 
 //Read the session from cookie
 passport.deserializeUser((obj, done) => {
-    
     done(null, obj)
-})
+});
 

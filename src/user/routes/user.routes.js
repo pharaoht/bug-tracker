@@ -12,6 +12,6 @@ userRouter.get(`${resource}`, httpGetAllUsers);
 
 userRouter.get(`${resource}/new`, isLoginMiddlware, httpCreateUser);
 
-userRouter.get(`${resource}/:email`, isLoginMiddlware, httpGetUserByEmail);
+userRouter.get(`${resource}/email`, isLoginMiddlware, httpGetUserByEmail);
 
 module.exports = userRouter;

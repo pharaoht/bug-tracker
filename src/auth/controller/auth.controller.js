@@ -2,6 +2,10 @@ const passport = require('passport');
 
 async function httpOAuthLogin(req, res, next){
 
+    const referrer = req.headers.referer || '/';
+
+    req.session.referrer = referrer;
+
     passport.authenticate('google', 
         {
             scope: ['email','profile'],

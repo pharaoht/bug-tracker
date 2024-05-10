@@ -39,6 +39,7 @@ module.exports = class IssueRepository{
                     users.id as user__id,
                     users.firstName as firstName,
                     users.lastName as lastName,
+                    imageUrl,
                     teams.name as teamName,
                     teams.id as team_id,
                     ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
@@ -58,6 +59,7 @@ module.exports = class IssueRepository{
                     firstName,
                     lastName,
                     teamName, 
+                    imageUrl,
                     team_id,
                 CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
                 CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages

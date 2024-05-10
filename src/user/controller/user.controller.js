@@ -23,7 +23,7 @@ async function httpCreateUser(req, res){
 
     const { email, given_name, family_name } = req.session.passport.user;
 
-    let isExist = null;
+    let isExist = null; 
 
     if(!email){
 
@@ -58,13 +58,7 @@ async function httpCreateUser(req, res){
 
     }
 
-    const userInfo = {
-        email: email,
-        firstName: given_name,
-        lastName: family_name
-    }
-
-    return res.status(200).json({data: userInfo})
+    return res.redirect(req.session.referrer);
 
 };
 

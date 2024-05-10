@@ -64,11 +64,11 @@ async function httpCreateUser(req, res){
 
 async function httpGetUserByEmail(req, res){
 
-    const { email } = req.params;
+    const user = req.session.passport.user;
 
     try {
         
-        const results = await User.modelGetUserByEmail(email);
+        const results = await User.modelGetUserByEmail(user.email);
 
         //dal
         const dto = userDal.toDto(results);
@@ -77,8 +77,8 @@ async function httpGetUserByEmail(req, res){
         
     } catch (error) {
 
-        console.log(err);
-        return res.status(400).json({'error': 'Something went wrong'})
+        console.log(error);
+        return res.status(400).json({error: error.message})
     }
 
 };

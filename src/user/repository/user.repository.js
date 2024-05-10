@@ -33,8 +33,10 @@ module.exports = class UserRepository{
     static repoGetUserByEmail(email){
 
         const query = `
-            SELECT *
+            SELECT *,
+                teams.name as teamName
             FROM users
+            JOIN teams ON users.team_id = teams.id
             WHERE email = ?
         `;
 

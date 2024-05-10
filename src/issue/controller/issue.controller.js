@@ -15,7 +15,7 @@ async function httpGetAllIssues(req, res) {
         const results = await issueModel.modelGetAllIssues(issueObj);
 
         const dto = issueDal.toDto(results);
-
+  
         return res.status(200).json(dto);
     }
     catch(err){

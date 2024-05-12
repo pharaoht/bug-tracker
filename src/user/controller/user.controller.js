@@ -65,7 +65,7 @@ async function httpCreateUser(req, res){
 async function httpGetUserByEmail(req, res){
 
     const user = req.session.passport.user;
-
+  
     try {
         
         const results = await User.modelGetUserByEmail(user.email);
@@ -73,7 +73,7 @@ async function httpGetUserByEmail(req, res){
         //dal
         const dto = userDal.toDto(results);
 
-        return res.status(200).json(dto)
+        return res.status(200).json(dto);
         
     } catch (error) {
 

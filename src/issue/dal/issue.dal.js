@@ -54,6 +54,8 @@ class IssueDataAccessLayer {
     };
 
     fromDto ( data ){
+
+        
     }
 };
 

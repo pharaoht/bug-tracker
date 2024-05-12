@@ -40,6 +40,12 @@ class Issue extends IssueRepository{
         return this.repoSearchIssues(searchTerm)
     };
 
+    modelGetIssueByPriority( type ){
+
+        return this.repoGetIssueByPriority( type )
+
+    }
+
 };
 
 

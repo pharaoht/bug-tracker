@@ -113,4 +113,29 @@ module.exports = class IssueRepository{
 
         return db.execute(query, [searchTermWithWildcards])
     }
+
+    repoGetIssueByPriority( type ){
+
+        const query = `
+            SELECT 
+                issue.id,
+                title,
+                description,
+                status,
+                priority,
+                issue.createdAt,
+                users.id as user_id,
+                users.firstName as firstName,
+                users.lastName as lastName,
+                imageUrl,
+                teams.name as teamName,
+                teams.id as team_id
+            FROM ${this._tableName}
+            JOIN teams on issue.team_id = teams.id
+            JOIN users on issue.user_id = users.id 
+            WHERE priority = ?
+        `;
+
+        return db.execute(query, [type])
+    }
 }

@@ -148,7 +148,7 @@ async function httpSearchIssues(req, res){
 
         const dto = issueDal.toDto(results);
 
-        return res.status(200).json(dto)
+        return res.status(200).json(dto);
         
     }
     catch(error){
@@ -157,6 +157,32 @@ async function httpSearchIssues(req, res){
     }
 
 }
+
+async function httpGetIssuesByPriority(req, res){
+
+    const priorityType = req.params.type;
+
+    if(!priorityType){
+        return res.status(400).json({ error: 'Please provide a priority type identifier in your request' });
+    };
+
+    const upperCaseStr = priorityType.toUpperCase();
+
+    try {
+
+        const results = await issueModel.modelGetIssueByPriority(upperCaseStr);
+        
+        const dto = issueDal.toDto(results);
+
+        return res.status(200).json(dto);
+    }
+    catch(error){
+
+        console.log('error', error.message)
+        return res.status(400).json({ error: error.message })
+    }
+
+};
 
 async function httpSortIssues(req, res){
 
@@ -189,5 +215,6 @@ module.exports = {
     httpArchiveIssue,
     httpSearchIssues,
     httpSortIssues,
-    httpGetIssuesByUserId
+    httpGetIssuesByUserId,
+    httpGetIssuesByPriority
 }

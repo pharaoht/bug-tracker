@@ -26,9 +26,11 @@ async function httpOAuthCallback(req, res, next) {
 
 async function httpLogout(req, res){
 
+    const referrer = req.headers.referer || '/';
+
     req.logout();
 
-    return res.redirect('/issues');
+    return res.redirect(referrer);
 }
 
 async function httpOAuthFailure(req, res){

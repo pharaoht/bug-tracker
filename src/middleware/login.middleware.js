@@ -1,6 +1,10 @@
 function isLoginMiddleware(req, res, next){
 
-    const isLoggin = req.isAuthenticated() && req.user;
+    console.log(req.session.passport.user );
+    console.log('*************')
+    console.log(req.user)
+
+    const isLoggin = req.isAuthenticated() && req.session.passport.user;
 
     if(isLoggin) next();
     

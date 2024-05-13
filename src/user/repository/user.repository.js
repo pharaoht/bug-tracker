@@ -43,6 +43,19 @@ module.exports = class UserRepository{
         return db.execute(query, [ email ]);
     };
 
+    static repoGetUserById( id ){
+
+        const query = `
+            SELECT *,
+                teams.name as teamName
+            FROM users
+            JOIN teams ON users.team_id = teams.id
+            WHERE users.id = ?
+        `;
+
+        return db.execute(query, [ id ]);
+    }
+
     static repoGetAllUsers(skip, limit){
 
         const pageSkip = Math.abs(skip) || 1;

@@ -35,4 +35,8 @@ module.exports = class User extends UserRepository {
 
         return UserRepository.repoGetAllUsers(skip, limit)
     }
+
+    static modelGetUserById( id ){
+        return UserRepository.repoGetUserById(id);
+    }
 };

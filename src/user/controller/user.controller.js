@@ -81,13 +81,13 @@ async function httpCreateUser(req, res){
 
 };
 
-async function httpGetUserByEmail(req, res){
+async function httpGetUserById(req, res){
 
-    const user = req.session.passport.user;
-  
+    const user = req.user;
+
     try {
         
-        const results = await User.modelGetUserByEmail(user.email);
+        const results = await User.modelGetUserById(user.id);
 
         //dal
         const dto = userDal.toDto(results);
@@ -105,5 +105,5 @@ async function httpGetUserByEmail(req, res){
 module.exports = {
     httpGetAllUsers,
     httpCreateUser,
-    httpGetUserByEmail
+    httpGetUserById
 }

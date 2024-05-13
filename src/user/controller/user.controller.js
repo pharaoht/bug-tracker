@@ -1,5 +1,6 @@
 const User = require('../model/user.model');
 const userDal = require('../dal/user.dal');
+const jwt = require('jsonwebtoken');
 
 async function httpGetAllUsers(req, res){
 
@@ -25,6 +26,8 @@ async function httpCreateUser(req, res){
 
     let isExist = null; 
 
+    let user = {};
+
     if(!email){
 
         const error = new Error('no email was provided');
@@ -36,8 +39,8 @@ async function httpCreateUser(req, res){
         isExist = await User.modelCheckIfUserExist(email);
 
     }
-    catch(err){
-        console.log(err);
+    catch(error){
+        console.log(error);
         return res.status(400).json({'error': 'Something went wrong'})
 
     }
@@ -45,20 +48,36 @@ async function httpCreateUser(req, res){
     if(isExist[0][0].emailExists === 0){
 
         const newUser = new User(email, given_name, family_name);
-
+        
         try {
             
-            await newUser.modelCreateUser();
+            user = await newUser.modelCreateUser();
 
-        } catch (err) {
+        } catch (error) {
             
-            console.log(err);
+            console.log(error);
+            return res.status(400).json({'error': 'Something went wrong'})
+        }
+
+    }
+    else{
+
+        try{
+
+            user = await User.modelGetUserByEmail(email);
+        }
+        catch(error){
+            console.log(error);
             return res.status(400).json({'error': 'Something went wrong'})
         }
 
     }
 
-    return res.redirect(req.session.referrer);
+    const dto = userDal.toDto(user);
+
+    const token = jwt.sign(dto[0], process.env.COOKIE_KEY_ONE, { expiresIn: '1h'});
+
+    return res.redirect(`${req.session.referrer}?token=${token}`);
 
 };
 

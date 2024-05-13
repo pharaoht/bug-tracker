@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { httpCreateUser, httpGetAllUsers, httpGetUserByEmail } = require('../controller/user.controller');
+const { httpCreateUser, httpGetAllUsers, httpGetUserById } = require('../controller/user.controller');
 
 const isLoginMiddlware = require('../../middleware/login.middleware');
 
@@ -14,6 +14,6 @@ userRouter.get(`${resource}`, httpGetAllUsers);
 
 userRouter.get(`${resource}/new`, isLoginMiddlware, httpCreateUser);
 
-userRouter.get(`${resource}/email`, verifyJWTCookie, httpGetUserByEmail);
+userRouter.get(`${resource}/id`, verifyJWTCookie, httpGetUserById);
 
 module.exports = userRouter;

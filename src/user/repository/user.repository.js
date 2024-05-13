@@ -33,10 +33,18 @@ module.exports = class UserRepository{
     static repoGetUserByEmail(email){
 
         const query = `
-            SELECT *,
+            SELECT 
+				users.id,
+                email,
+                firstName, 
+                lastName, 
+                users.createdAt,
+                isAdmin,
+                imageUrl,
+                teams.id as team_id,
                 teams.name as teamName
-            FROM users
-            JOIN teams ON users.team_id = teams.id
+            FROM issue_tracker.users
+            JOIN issue_tracker.teams ON users.team_id = teams.id
             WHERE email = ?
         `;
 
@@ -46,10 +54,18 @@ module.exports = class UserRepository{
     static repoGetUserById( id ){
 
         const query = `
-            SELECT *,
+            SELECT 
+				users.id,
+                email,
+                firstName, 
+                lastName, 
+                users.createdAt,
+                isAdmin,
+                imageUrl,
+                teams.id as team_id,
                 teams.name as teamName
-            FROM users
-            JOIN teams ON users.team_id = teams.id
+            FROM issue_tracker.users
+            JOIN issue_tracker.teams ON users.team_id = teams.id
             WHERE users.id = ?
         `;
 

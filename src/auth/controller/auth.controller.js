@@ -30,6 +30,8 @@ async function httpLogout(req, res){
 
     req.logout();
 
+    res.clearCookie('token')
+
     return res.redirect(referrer);
 }
 

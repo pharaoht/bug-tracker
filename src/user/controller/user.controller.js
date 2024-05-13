@@ -73,6 +73,7 @@ async function httpCreateUser(req, res){
 
     }
 
+
     const dto = userDal.toDto(user);
 
     const token = jwt.sign(dto[0], process.env.COOKIE_KEY_ONE, { expiresIn: '1h'});

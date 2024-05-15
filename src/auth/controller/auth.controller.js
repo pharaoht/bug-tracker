@@ -26,13 +26,13 @@ async function httpOAuthCallback(req, res, next) {
 
 async function httpLogout(req, res){
 
-    const referrer = req.headers.referer || '/';
-
     req.logout();
 
-    res.clearCookie('token')
+    res.clearCookie('token');
 
-    return res.redirect(referrer);
+    res.clearCookie('userSession')
+
+    return res.status(200)
 }
 
 async function httpOAuthFailure(req, res){

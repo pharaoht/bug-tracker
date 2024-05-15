@@ -11,8 +11,8 @@ module.exports = class UserRepository{
         const { email, givenName, familyName } = userModel;
 
         const query = ` 
-            INSERT INTO ${this.tableName} (email, firstName, lastName) 
-            VALUES (?, ?, ?)
+            INSERT INTO ${this.tableName} (email, firstName, lastName, team_id) 
+            VALUES (?, ?, ?, 1)
         `;
 
         return db.execute(query, [ email, givenName, familyName ]);

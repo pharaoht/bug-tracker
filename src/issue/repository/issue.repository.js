@@ -4,18 +4,32 @@ module.exports = class IssueRepository{
 
     constructor(){
         this._tableName = 'issue';
+        this._columns = `
+            issue.id as issue_id,
+            title,
+            description,
+            status,
+            priority,
+            issue.createdAt,
+            users.id as user_id,
+            users.firstName as firstName,
+            users.lastName as lastName,
+            imageUrl,
+            teams.name as teamName,
+            teams.id as team_id
+        `
     }
     
     repoCreateIssue( issueDataModel ) {
 
-        const { title, description, userId } = issueDataModel;
+        const { title, description, userId, status, priority, teamId } = issueDataModel;
 
         const query = ` 
-            INSERT INTO issue (title, description, status, user_id) 
-            VALUES (?,?,'OPEN',?)
+            INSERT INTO issue (title, description, status, user_id, priority, team_id) 
+            VALUES (?,?,?,?,?,?)
         `;
 
-        return db.execute(query, [title, description, userId])
+        return db.execute(query, [title, description, status, userId, priority, teamId])
     }
 
     repoGetAllIsues( issueObj ) {
@@ -29,19 +43,7 @@ module.exports = class IssueRepository{
         const query = `
                 WITH PagedIssues AS (
                 SELECT 
-                    issue.id as issue_id,
-                    title,
-                    description,
-                    status,
-                    priority,
-                    issue.createdAt,
-                    user_id,
-                    users.id as user__id,
-                    users.firstName as firstName,
-                    users.lastName as lastName,
-                    imageUrl,
-                    teams.name as teamName,
-                    teams.id as team_id,
+                    ${this._columns},
                     ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
                     COUNT(*) OVER () AS totalCount
                 FROM ${this._tableName}
@@ -75,9 +77,11 @@ module.exports = class IssueRepository{
         const id = issueId;
 
         const query = `
-            SELECT *
+            SELECT 
+                ${this._columns}
             FROM issue
             JOIN users on issue.user_id = users.id
+            JOIN teams on issue.team_id = teams.id
             WHERE issue.id = ?
         `;
 
@@ -104,8 +108,11 @@ module.exports = class IssueRepository{
     repoSearchIssues( searchTerm ){
 
         const query = `
-            SELECT *
+            SELECT 
+                ${this._columns}
             FROM ${this._tableName}
+            JOIN teams on issue.team_id = teams.id
+            JOIN users on issue.user_id = users.id 
             WHERE CONCAT(title, ' ', description) LIKE ?;
         `;
 
@@ -118,22 +125,24 @@ module.exports = class IssueRepository{
 
         const query = `
             SELECT 
-                issue.id,
-                title,
-                description,
-                status,
-                priority,
-                issue.createdAt,
-                users.id as user_id,
-                users.firstName as firstName,
-                users.lastName as lastName,
-                imageUrl,
-                teams.name as teamName,
-                teams.id as team_id
+                ${this._columns}
             FROM ${this._tableName}
             JOIN teams on issue.team_id = teams.id
             JOIN users on issue.user_id = users.id 
             WHERE priority = ?
+        `;
+
+        return db.execute(query, [type])
+    }
+
+    repoGetIssuesByStatus( type ){
+        const query = `
+            SELECT 
+                ${this._columns}
+            FROM ${this._tableName}
+            JOIN teams on issue.team_id = teams.id
+            JOIN users on issue.user_id = users.id 
+            WHERE status = ?
         `;
 
         return db.execute(query, [type])

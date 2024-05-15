@@ -2,7 +2,9 @@ const express = require('express');
 
 const isLoginMiddlware = require('../../middleware/login.middleware');
 
-const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority } = require('../controller/issue.controller');
+const verifyJwtCookie = require('../../middleware/jwt.middleware');
+
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
@@ -18,12 +20,14 @@ issueRouter.get(`${resource}/:id`, httpGetOneIssue);
 
 issueRouter.get(`${resource}/priority/:type`, httpGetIssuesByPriority);
 
+issueRouter.get(`${resource}/status/:type`, httpGetIssuesByStatus);
+
 issueRouter.get(`${resource}/user/:id`, httpGetIssuesByUserId);
 
-issueRouter.post(`${resource}/new`, isLoginMiddlware, httpCreateNewIssue);
+issueRouter.post(`${resource}/new`, verifyJwtCookie, httpCreateNewIssue);
 
-issueRouter.put(`${resource}/:id`, isLoginMiddlware, httpUpdateIssue);
+issueRouter.put(`${resource}/:id`, verifyJwtCookie, httpUpdateIssue);
 
-issueRouter.delete(`${resource}/:id`, isLoginMiddlware, httpArchiveIssue);
+issueRouter.delete(`${resource}/:id`, verifyJwtCookie, httpArchiveIssue);
 
 module.exports = issueRouter;

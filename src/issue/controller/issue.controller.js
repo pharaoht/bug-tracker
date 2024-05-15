@@ -1,6 +1,7 @@
 const issueModel = require('../model/issue.model');
 const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
+const { camelToSnake } = require('../../util/index')
 
 async function httpGetAllIssues(req, res) {
 
@@ -18,8 +19,8 @@ async function httpGetAllIssues(req, res) {
   
         return res.status(200).json(dto);
     }
-    catch(err){
-        console.log(err)
+    catch(error){
+        console.log(error)
         return res.status(400).json({error:'something went wrong'})
     }
 
@@ -32,20 +33,20 @@ async function httpCreateNewIssue(req, res) {
 
     try{
 
-        issueValidator.validateInputString(body);
+        // issueValidator.validateInputString(body);
 
-        const { title, description, userId } = body;
+        const { title, description, userId, status, priority, teamId } = body;
 
-        await issueModel.modelCreateIssue(title, description, userId);
+        await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
 
-        return res.status(201);
+        return res.status(200);
 
     }
-    catch(err){
+    catch(error){
 
-        console.log(`Error: ${err.message}`);
+        console.log(`Error: ${error.message}`);
 
-        return res.status(400).json({'error': err.message});
+        return res.status(400).json({'error': error.message});
 
     }
 
@@ -63,11 +64,11 @@ async function httpGetOneIssue(req, res, next){
 
         return res.status(200).json(dto);
 
-    } catch (err) {
+    } catch (error) {
         
-        console.log(`Error: ${err.message}`);
+        console.log(`Error: ${error.message}`);
 
-        return res.status(404).json({'error': err.message});
+        return res.status(404).json({'error': error.message});
 
     }
 
@@ -85,11 +86,11 @@ async function httpUpdateIssue(req, res){
         issueValidator.validateInputString(body);
 
     }
-    catch(err){
+    catch(error){
 
-        console.log(`Error: ${err.message}`);
+        console.log(`Error: ${error.message}`);
 
-        return res.status(400).json({'error': err.message});
+        return res.status(400).json({'error': error.message});
 
     }
 
@@ -108,9 +109,9 @@ async function httpUpdateIssue(req, res){
 
     } catch (error) {
         
-        console.log(`Error: ${err.message}`);
+        console.log(`Error: ${error.message}`);
 
-        return res.status(404).json({'error': err.message});
+        return res.status(404).json({'error': error.message});
 
     }
 }
@@ -127,9 +128,9 @@ async function httpArchiveIssue(req, res){
 
     } catch (error) {
         
-        console.log(`Error: ${err.message}`);
+        console.log(`Error: ${error.message}`);
 
-        return res.status(404).json({'error': err.message});
+        return res.status(404).json({'error': error.message});
 
     }
 }
@@ -154,6 +155,31 @@ async function httpSearchIssues(req, res){
     catch(error){
         console.log(error)
         return res.status(400).json({ error:'Something went wrong'})
+    }
+
+}
+
+async function httpGetIssuesByStatus(req, res){
+
+    const statusType = req.params.type;
+
+    if(!statusType){
+        return res.status(400).json({ error: 'Please provide a priority type identifier in your request' });
+    }
+
+    const fixedCase = camelToSnake(statusType).toUpperCase();
+
+    try{
+
+        const results = await issueModel.modelGetIssuesByStatus(fixedCase);
+
+        const dto = issueDal.toDto(results);
+
+        return res.status(200).json(dto);
+    }
+    catch(error){
+        console.log('error', error.message)
+        return res.status(400).json({ error: error.message })
     }
 
 }
@@ -216,5 +242,6 @@ module.exports = {
     httpSearchIssues,
     httpSortIssues,
     httpGetIssuesByUserId,
-    httpGetIssuesByPriority
+    httpGetIssuesByPriority,
+    httpGetIssuesByStatus
 }

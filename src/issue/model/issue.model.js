@@ -2,18 +2,24 @@ const IssueRepository = require('../repository/issue.repository');
 
 class Issue extends IssueRepository{
 
-    constructor(title, description, userId){
+    constructor(title, description, userId, status, priority, teamId){
         super();
         this.title = title;
         this.description = description;
         this.userId = userId;
+        this.status = status;
+        this.priority = priority;
+        this.teamId = teamId
     }
 
-    modelCreateIssue(title, description){
+    modelCreateIssue(title, description, userId, status, priority, teamId){
         const issueData = {
             title: title,
             description: description,
-            userId: userId
+            userId: userId,
+            status: status,
+            priority: priority,
+            teamId: teamId
         }
         return this.repoCreateIssue(issueData);
     }
@@ -43,7 +49,10 @@ class Issue extends IssueRepository{
     modelGetIssueByPriority( type ){
 
         return this.repoGetIssueByPriority( type )
+    }
 
+    modelGetIssuesByStatus( type ){
+        return this.repoGetIssuesByStatus( type )
     }
 
 };

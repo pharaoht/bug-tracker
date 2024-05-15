@@ -34,6 +34,7 @@ class UserDataAccessLayer {
                 name: `${capitalizeFirstLetter(itm[this.firstName])} ${capitalizeFirstLetter(itm[this.lastName])}`,
                 isAdmin: admin,
                 teamName: itm[this.teamName],
+                teamId: itm[this.teamId],
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY'),
                 imageUrl: imageUrl
             }

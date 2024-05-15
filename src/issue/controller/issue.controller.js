@@ -33,13 +33,13 @@ async function httpCreateNewIssue(req, res) {
 
     try{
 
-        // issueValidator.validateInputString(body);
+        issueValidator.validateInputString(body);
 
         const { title, description, userId, status, priority, teamId } = body;
 
         await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
 
-        return res.status(200);
+        return res.status(200).json('success')
 
     }
     catch(error){

@@ -18,7 +18,7 @@ const verifyJWTlogin = (req, res, next) => {
 
         res.clearCookie('token');
 
-        return res.status(401).json({error: 'session expired'});
+        return res.status(401).json({error: 'Your session expired please login.'});
     }
 };
 

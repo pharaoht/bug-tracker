@@ -41,7 +41,7 @@ async function httpCreateUser(req, res){
     }
     catch(error){
         console.log(error);
-        return res.status(400).json({'error': 'Something went wrong'})
+        return res.status(400).json({'error': error.message || 'Something went wrong'})
 
     }
 

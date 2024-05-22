@@ -39,7 +39,7 @@ async function httpCreateNewIssue(req, res) {
 
         await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
 
-        return res.status(200).json('success')
+        return res.status(200).json({data:'success'})
 
     }
     catch(error){
@@ -105,7 +105,7 @@ async function httpUpdateIssue(req, res){
         
         await issueModel.modelUpdateIssue(issueData);
 
-        return res.status(204)
+        return res.status(200)
 
     } catch (error) {
         

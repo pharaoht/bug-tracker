@@ -20,7 +20,7 @@ async function httpGetAllUsers(req, res){
 
 };
 
-async function httpCreateUser(req, res){
+async function httpCreateUser(req, res, next){
 
     const { email, given_name, family_name } = req.session.passport.user;
 
@@ -28,10 +28,9 @@ async function httpCreateUser(req, res){
 
     let user = {};
 
-    if(!email){
+    if(!email || !given_name || !family_name){
 
-        const error = new Error('no email was provided');
-        next(error)
+       return res.status(400).json({ 'error': 'Please go to your Google account to fill in your name information. We need it to id you'})
     } 
 
     try{
@@ -68,7 +67,7 @@ async function httpCreateUser(req, res){
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({'error': 'Something went wrong'})
+            return res.status(400).json({'error': error.message || 'Something went wrong'})
         }
 
     }

@@ -32,7 +32,7 @@ async function httpLogout(req, res){
 
     res.clearCookie('userSession')
 
-    return res.status(200)
+    return res.redirect('/')
 }
 
 async function httpOAuthFailure(req, res){

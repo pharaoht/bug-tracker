@@ -37,7 +37,7 @@ class IssueDataAccessLayer {
                 id: itm[this.id],
                 title: itm[this.title],
                 description: itm[this.description],
-                status: itm[this.status],
+                status: itm[this.status].replace(/_/, ' '),
                 priority: itm[this.priority],
                 createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY'),
                 team: itm[this.teamName],
@@ -55,8 +55,23 @@ class IssueDataAccessLayer {
 
     fromDto ( data ){
 
-        
-    }
+
+        const dto = Object.entries(data).reduce((acc, [key, value]) => {
+
+            if(key == 'priority' || key == 'status'){
+                acc[key] = String(value).toUpperCase();
+            }
+            else {
+                acc[key] = value;
+            }
+
+            return acc;
+
+        }, {});
+
+        return dto;
+
+    };
 };
 
 const issueDal = new IssueDataAccessLayer();

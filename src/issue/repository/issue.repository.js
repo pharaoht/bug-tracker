@@ -90,19 +90,20 @@ module.exports = class IssueRepository{
 
     repoUpdateIssue( issueBody ){
 
-        const { id, title, description, status } = issueBody;
+        const { id, title, description, status, priority } = issueBody;
 
         const query = `
             UPDATE issue
             SET
                 title = ?,
-                description = ?
-                status = ?
+                description = ?,
+                status = ?,
+                priority = ?
             WHERE
                 id = ?
         `;
 
-        return db.execute(query, [title, description, status, id]);
+        return db.execute(query, [title, description, status, priority, id]);
     }
 
     repoSearchIssues( searchTerm ){

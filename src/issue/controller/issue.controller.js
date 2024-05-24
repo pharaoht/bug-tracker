@@ -39,7 +39,7 @@ async function httpCreateNewIssue(req, res) {
 
         await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
 
-        return res.status(200).json({data:'success'})
+        return res.status(200).json({ data:'success' })
 
     }
     catch(error){
@@ -98,14 +98,17 @@ async function httpUpdateIssue(req, res){
         id: issueId,
         title: body.title,
         description: body.description,
-        status: body.status
+        status: body.status,
+        priority: body.priority
     };
+
+    const fromDto = issueDal.fromDto(issueData);
 
     try {
         
-        await issueModel.modelUpdateIssue(issueData);
+        await issueModel.modelUpdateIssue(fromDto);
 
-        return res.status(200)
+        return res.status(200).json({ data: 'success' })
 
     } catch (error) {
         
@@ -192,11 +195,15 @@ async function httpGetIssuesByPriority(req, res){
         return res.status(400).json({ error: 'Please provide a priority type identifier in your request' });
     };
 
-    const upperCaseStr = priorityType.toUpperCase();
+    const obj = { priority: priorityType }
+
+    const fromDto = issueDal.fromDto(obj);
 
     try {
 
-        const results = await issueModel.modelGetIssueByPriority(upperCaseStr);
+        const { priority } = fromDto;
+
+        const results = await issueModel.modelGetIssueByPriority(priority);
         
         const dto = issueDal.toDto(results);
 

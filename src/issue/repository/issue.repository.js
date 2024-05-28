@@ -4,6 +4,7 @@ module.exports = class IssueRepository{
 
     constructor(){
         this._tableName = 'issue';
+        this._archiveTableName = 'issue_archive'
         this._columns = `
             issue.id as issue_id,
             title,
@@ -147,5 +148,44 @@ module.exports = class IssueRepository{
         `;
 
         return db.execute(query, [type])
+    }
+
+    async repoArchiveIssue( id ){
+
+        const connection = await db.getConnection();
+
+        try {
+            await connection.beginTransaction();
+
+            const queryInsert = `
+                INSERT INTO ${this._archiveTableName} (id, title, description, status, priority, createdAt, updatedAt, user_id, team_id)
+                SELECT id, title, description, status, priority, createdAt, updatedAt, user_id, team_id
+                FROM ${this._tableName}
+                WHERE id = ?;
+            `;
+
+            const queryDelete = `
+                DELETE FROM ${this._tableName}
+                WHERE id = ?;
+            `;
+
+            await connection.query(queryInsert, [id]);
+
+            await connection.query(queryDelete, [id]);
+
+            await connection.commit();
+
+            return true;
+        } 
+        catch (error) {
+
+            await connection.rollback();
+
+            throw error;
+        } 
+        finally {
+            connection.release();
+        }
+
     }
 }

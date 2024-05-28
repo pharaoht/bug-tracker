@@ -1,8 +1,9 @@
 const issueModel = require('../model/issue.model');
 const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
-const { camelToSnake } = require('../../util/index');
+const { deleteFileFromFs } = require('../../util/index');
 const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
+const ImageUploadService = require('../../services/upload/imageUpload.services');
 
 async function httpGetAllIssues(req, res) {
 
@@ -262,6 +263,29 @@ async function httpGetIssuesByUserId(req, res){
     }
 }
 
+async function httpUploadIssueImage (req, res){
+
+    const filePath = req.file.path;
+
+    try{
+
+        const imageUploadService = new ImageUploadService();
+
+        await imageUploadService.uploadImage(filePath, 'issue');
+
+        deleteFileFromFs(filePath);
+
+        return res.status(200).json({ data: 'success' })
+    }
+    catch(error){
+
+        console.log(error, error.message);
+
+        return res.status(500).json({error: error.message});
+    }
+
+}
+
 
 module.exports = {
     httpGetAllIssues,
@@ -274,5 +298,6 @@ module.exports = {
     httpGetIssuesByUserId,
     httpGetIssuesByPriority,
     httpGetIssuesByStatus,
-    httpExportToPdf
+    httpExportToPdf,
+    httpUploadIssueImage
 }

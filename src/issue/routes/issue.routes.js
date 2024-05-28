@@ -4,7 +4,9 @@ const isLoginMiddlware = require('../../middleware/login.middleware');
 
 const verifyJwtCookie = require('../../middleware/jwt.middleware');
 
-const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus, httpExportToPdf } = require('../controller/issue.controller');
+const multerUpload = require('../../middleware/multer.middleware');
+
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus, httpExportToPdf, httpUploadIssueImage } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
@@ -31,5 +33,7 @@ issueRouter.post(`${resource}/new`, verifyJwtCookie, httpCreateNewIssue);
 issueRouter.put(`${resource}/:id`, verifyJwtCookie, httpUpdateIssue);
 
 issueRouter.delete(`${resource}/:id`, verifyJwtCookie, httpArchiveIssue);
+
+issueRouter.post(`${resource}/test`, multerUpload, httpUploadIssueImage);
 
 module.exports = issueRouter;

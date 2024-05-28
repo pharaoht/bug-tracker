@@ -56,7 +56,7 @@ apiRouter.use(teamRouter);
 
 app.get('/' , (req, res) => {
 
-    res.sendFile(path.join(__dirname, 'html', 'verify.html'))
+    res.sendFile(path.join(__dirname, 'templates', 'verify.html'))
 });
 
 module.exports = app;

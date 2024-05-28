@@ -1,7 +1,8 @@
 const issueModel = require('../model/issue.model');
 const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
-const { camelToSnake } = require('../../util/index')
+const { camelToSnake } = require('../../util/index');
+const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
 
 async function httpGetAllIssues(req, res) {
 
@@ -170,11 +171,15 @@ async function httpGetIssuesByStatus(req, res){
         return res.status(400).json({ error: 'Please provide a priority type identifier in your request' });
     }
 
-    const fixedCase = camelToSnake(statusType).toUpperCase();
+    const obj = { status: statusType };
+
+    const fromDto = issueDal.fromDto(obj);
 
     try{
 
-        const results = await issueModel.modelGetIssuesByStatus(fixedCase);
+        const { status } = fromDto
+
+        const results = await issueModel.modelGetIssuesByStatus(status);
 
         const dto = issueDal.toDto(results);
 
@@ -217,6 +222,24 @@ async function httpGetIssuesByPriority(req, res){
 
 };
 
+async function httpExportToPdf(req, res){
+
+    try{
+
+        const pdfBuffer = await htmlToPdfBuilder();
+
+        res.setHeader('Content-Disposition', 'attachment; filename="report.pdf"');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Length', pdfBuffer.length);
+
+        res.send(pdfBuffer);
+    }
+    catch(error){
+        console.log('error', error.message)
+        return res.status(400).json({ error: error.message })
+    }
+}
+
 async function httpSortIssues(req, res){
 
     try{
@@ -250,5 +273,6 @@ module.exports = {
     httpSortIssues,
     httpGetIssuesByUserId,
     httpGetIssuesByPriority,
-    httpGetIssuesByStatus
+    httpGetIssuesByStatus,
+    httpExportToPdf
 }

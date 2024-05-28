@@ -29,9 +29,12 @@ class IssueDataAccessLayer {
 
         const issueData = data.slice(0,1).flat();
 
-        const imageUrl = IMAGEDOMAIN
+        const imageUrl = IMAGEDOMAIN;
+
 
         const dto = issueData.map((itm, idx) => {
+
+            const userImageUrl = !itm[this.imageUrl] ? IMAGEURL : imageUrl + itm[this.imageUrl] 
 
             return {
                 id: itm[this.id],
@@ -43,7 +46,7 @@ class IssueDataAccessLayer {
                 team: itm[this.teamName],
                 teamId: itm[this.teamId],
                 userId: itm[this.userId],
-                imageUrl: imageUrl + itm[this.imageUrl],
+                imageUrl: userImageUrl,
                 createdBy: `${capitalizeFirstLetter(itm[this.firstName])}, ${capitalizeFirstLetter(itm[this.lastName])}`,
             }
 

@@ -4,7 +4,7 @@ const isLoginMiddlware = require('../../middleware/login.middleware');
 
 const verifyJwtCookie = require('../../middleware/jwt.middleware');
 
-const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus } = require('../controller/issue.controller');
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus, httpExportToPdf } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
@@ -23,6 +23,8 @@ issueRouter.get(`${resource}/priority/:type`, httpGetIssuesByPriority);
 issueRouter.get(`${resource}/status/:type`, httpGetIssuesByStatus);
 
 issueRouter.get(`${resource}/user/:id`, httpGetIssuesByUserId);
+
+issueRouter.post(`${resource}/pdf`, httpExportToPdf);
 
 issueRouter.post(`${resource}/new`, verifyJwtCookie, httpCreateNewIssue);
 

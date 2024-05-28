@@ -128,7 +128,7 @@ async function httpArchiveIssue(req, res){
         
         await issueModel.modelArchiveIssue(issueId);
 
-        return res.status(204)
+        return res.status(200).json({ data: 'success' })
 
     } catch (error) {
         

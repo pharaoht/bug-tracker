@@ -40,7 +40,11 @@ class Issue extends IssueRepository{
         return this.repoGetOneIssue(id);
     };
     
-    modelArchiveIssue(id) { };
+    modelArchiveIssue(id) { 
+
+        return this.repoArchiveIssue(id)
+    };
+
     modelSearchIssues( searchTerm ) { 
 
         return this.repoSearchIssues(searchTerm)
@@ -49,11 +53,11 @@ class Issue extends IssueRepository{
     modelGetIssueByPriority( type ){
 
         return this.repoGetIssueByPriority( type )
-    }
+    };
 
     modelGetIssuesByStatus( type ){
         return this.repoGetIssuesByStatus( type )
-    }
+    };
 
 };
 

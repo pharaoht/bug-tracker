@@ -31,7 +31,6 @@ class IssueDataAccessLayer {
 
         const imageUrl = IMAGEDOMAIN;
 
-
         const dto = issueData.map((itm, idx) => {
 
             const userImageUrl = !itm[this.imageUrl] ? IMAGEURL : imageUrl + itm[this.imageUrl] 
@@ -48,6 +47,8 @@ class IssueDataAccessLayer {
                 userId: itm[this.userId],
                 imageUrl: userImageUrl,
                 createdBy: `${capitalizeFirstLetter(itm[this.firstName])}, ${capitalizeFirstLetter(itm[this.lastName])}`,
+                totalCount: itm.totalCount,
+                
             }
 
         });

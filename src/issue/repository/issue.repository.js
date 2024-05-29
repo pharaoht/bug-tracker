@@ -67,7 +67,8 @@ module.exports = class IssueRepository{
                     imageUrl,
                     team_id,
                 CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
-                CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages
+                CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages,
+                totalCount
                 FROM PagedIssues
                 WHERE RowNum BETWEEN ? AND ?;
         `;

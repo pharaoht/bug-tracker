@@ -24,9 +24,7 @@ module.exports = class ImageRepository {
             WHERE issue_id = ?
         `;
 
-        const result = await db.execute(query, [ issueId ]);
-
-        return result[0][0].image_url
+        return await db.execute(query, [ issueId ]);
     }
 
     async repoDeleteImage( ){

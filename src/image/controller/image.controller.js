@@ -1,4 +1,5 @@
 const ImageRepository = require('../../image/repository/image.repository');
+const issueImageDal = require('../dal/image.dto');
 
 async function httpGetImagesByIssueId(req, res){
 
@@ -8,9 +9,9 @@ async function httpGetImagesByIssueId(req, res){
 
         const imageRepository = new ImageRepository();
 
-        const result = imageRepository.repoGetImage(issueId);
+        const result = await imageRepository.repoGetImage(issueId);
 
-        const dto = {};
+        const dto = issueImageDal.toDto(result);
 
         res.status(200).json(dto);
     }

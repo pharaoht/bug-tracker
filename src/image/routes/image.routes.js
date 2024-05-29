@@ -4,6 +4,9 @@ const { httpGetImagesByIssueId } = require('../controller/image.controller');
 
 const issueImagesRouter = express.Router();
 
-const resource = '/images/issue';
+const resource = '/images/issues';
 
 issueImagesRouter.get(`${resource}/:id`, httpGetImagesByIssueId );
+
+
+module.exports = issueImagesRouter;

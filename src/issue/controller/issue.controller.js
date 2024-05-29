@@ -5,6 +5,7 @@ const { deleteFileFromFs } = require('../../util/index');
 const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
 const ImageUploadService = require('../../services/upload/imageUpload.services');
 const ImageRepository = require('../../image/repository/image.repository');
+const issueImageDal = require('../../image/dal/image.dto');
 
 async function httpGetAllIssues(req, res) {
 
@@ -56,7 +57,7 @@ async function httpCreateNewIssue(req, res) {
 
         const imageRepository = new ImageRepository();
 
-        imageRepository.repoCreateImage(resultId, fileUrl);
+        await imageRepository.repoCreateImage(resultId, fileUrl);
 
         return res.status(200).json({ data:'success' })
 
@@ -148,9 +149,11 @@ async function httpArchiveIssue(req, res){
 
         const imageResult = await imageRepository.repoGetImage(issueId);
 
+        const dto = issueImageDal.toDto(imageResult)
+
         const imageUploadService = new ImageUploadService();
 
-        await imageUploadService.deleteImage(imageResult, 'issue');
+        await imageUploadService.deleteImage(dto[0].imageKey, 'issue');
         
         await issueModel.modelArchiveIssue(issueId);
 

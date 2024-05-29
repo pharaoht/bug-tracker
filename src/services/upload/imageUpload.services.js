@@ -13,10 +13,10 @@ class ImageUploadService {
 
     };
 
-    async deleteImage( imageUrl, folder ) {
+    async deleteImage( imageUrl, ) {
 
-        const publicId = `${folder}/${imageUrl}`;
-    
+        const publicId = imageUrl
+
         try {
 
             console.log('**deleting image**');

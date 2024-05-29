@@ -25,6 +25,7 @@ const issueRouter = require('./issue/routes/issue.routes');
 const userRouter = require('./user/routes/user.routes');
 
 const teamRouter = require('./team/routes/team.routes');
+const issueImagesRouter = require('./image/routes/image.routes');
 
 const app = express();
 
@@ -55,6 +56,8 @@ apiRouter.use(issueRouter);
 apiRouter.use(userRouter);
 
 apiRouter.use(teamRouter);
+
+apiRouter.use(issueImagesRouter);
 
 app.get('/' , (req, res) => {
 

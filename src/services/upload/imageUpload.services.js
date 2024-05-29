@@ -13,6 +13,31 @@ class ImageUploadService {
 
     };
 
+    async deleteImage( imageUrl, folder ) {
+
+        const publicId = `${folder}/${imageUrl}`;
+    
+        try {
+
+            console.log('**deleting image**');
+
+            const result = await cloudinary.uploader.destroy(publicId);
+
+            console.log('**image deletion successful**')
+
+            return true;
+
+        } catch (error) {
+        
+            console.log('**image deletion failed**');
+
+            console.log(error, error.message)
+
+            return false;
+
+        }
+    }
+
     async uploadImage( imageUrl, folder ){
 
         console.log('uploading image....')

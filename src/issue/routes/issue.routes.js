@@ -28,12 +28,13 @@ issueRouter.get(`${resource}/user/:id`, httpGetIssuesByUserId);
 
 issueRouter.post(`${resource}/pdf`, httpExportToPdf);
 
-issueRouter.post(`${resource}/new`, verifyJwtCookie, httpCreateNewIssue);
+issueRouter.post(`${resource}/new`, verifyJwtCookie, multerUpload, httpCreateNewIssue);
+
+issueRouter.post(`${resource}/upload`, verifyJwtCookie, multerUpload, httpUploadIssueImage);
 
 issueRouter.put(`${resource}/:id`, verifyJwtCookie, httpUpdateIssue);
 
 issueRouter.delete(`${resource}/:id`, verifyJwtCookie, httpArchiveIssue);
 
-issueRouter.post(`${resource}/test`, multerUpload, httpUploadIssueImage);
 
 module.exports = issueRouter;

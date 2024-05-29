@@ -1,6 +1,7 @@
 const User = require('../model/user.model');
 const userDal = require('../dal/user.dal');
 const jwt = require('jsonwebtoken');
+const ImageUploadService = require('../../services/upload/imageUpload.services');
 
 async function httpGetAllUsers(req, res){
 
@@ -102,8 +103,31 @@ async function httpGetUserById(req, res){
 
 };
 
+async function httpUploadUserImage(req, res){
+
+    const filePath = req.file.path;
+
+    try{
+
+        const imageUploadService = new ImageUploadService();
+
+        await imageUploadService.uploadImage(filePath, 'user/profile_images');
+
+        deleteFileFromFs(filePath);
+
+        return res.status(200).json({ data: 'success' })
+    }
+    catch(error){
+
+        console.log(error, error.message);
+
+        return res.status(500).json({error: error.message});
+    }
+}
+
 module.exports = {
     httpGetAllUsers,
     httpCreateUser,
-    httpGetUserById
+    httpGetUserById,
+    httpUploadUserImage
 }

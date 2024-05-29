@@ -1,8 +1,10 @@
 const issueModel = require('../model/issue.model');
 const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
-const { camelToSnake } = require('../../util/index');
+const { deleteFileFromFs } = require('../../util/index');
 const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
+const ImageUploadService = require('../../services/upload/imageUpload.services');
+const ImageRepository = require('../../image/repository/image.repository');
 
 async function httpGetAllIssues(req, res) {
 
@@ -32,13 +34,29 @@ async function httpCreateNewIssue(req, res) {
 
     const body = req.body;
 
+    let filepath;
+
+    if(req.file){
+        filepath = req.file.path;
+    }
+
     try{
 
         issueValidator.validateInputString(body);
 
         const { title, description, userId, status, priority, teamId } = body;
 
-        await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
+        const resultId = await issueModel.modelCreateIssue(title, description, userId, status, priority, teamId);
+
+        let fileUrl;
+
+        if(filepath){
+            fileUrl = await uploadImageHelper(filepath)
+        }
+
+        const imageRepository = new ImageRepository();
+
+        imageRepository.repoCreateImage(resultId, fileUrl);
 
         return res.status(200).json({ data:'success' })
 
@@ -125,6 +143,14 @@ async function httpArchiveIssue(req, res){
     const issueId = req.params.id;
 
     try {
+
+        const imageRepository = new ImageRepository();
+
+        const imageResult = await imageRepository.repoGetImage(issueId);
+
+        const imageUploadService = new ImageUploadService();
+
+        await imageUploadService.deleteImage(imageResult, 'issue');
         
         await issueModel.modelArchiveIssue(issueId);
 
@@ -262,6 +288,49 @@ async function httpGetIssuesByUserId(req, res){
     }
 }
 
+async function httpUploadIssueImage (req, res){
+
+    const filePath = req.file.path;
+
+    try{
+
+        const imageUploadService = new ImageUploadService();
+
+        await imageUploadService.uploadImage(filePath, 'issue');
+
+        deleteFileFromFs(filePath);
+
+        return res.status(200).json({ data: 'success' })
+    }
+    catch(error){
+
+        console.log(error, error.message);
+
+        return res.status(500).json({error: error.message});
+    }
+
+}
+
+async function uploadImageHelper(filePath){
+
+    try {
+
+        const imageUploadService = new ImageUploadService();
+
+        const imageResult = await imageUploadService.uploadImage(filePath, 'issue');
+
+        deleteFileFromFs(filePath);
+
+        return imageResult.public_id.split('/')[1];
+    }
+    catch(error){
+
+        console.log(error, error.message);
+
+        return false;
+    }
+};
+
 
 module.exports = {
     httpGetAllIssues,
@@ -274,5 +343,6 @@ module.exports = {
     httpGetIssuesByUserId,
     httpGetIssuesByPriority,
     httpGetIssuesByStatus,
-    httpExportToPdf
+    httpExportToPdf,
+    httpUploadIssueImage
 }

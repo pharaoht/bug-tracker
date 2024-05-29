@@ -21,7 +21,7 @@ module.exports = class IssueRepository{
         `
     }
     
-    repoCreateIssue( issueDataModel ) {
+    async repoCreateIssue( issueDataModel ) {
 
         const { title, description, userId, status, priority, teamId } = issueDataModel;
 
@@ -30,7 +30,9 @@ module.exports = class IssueRepository{
             VALUES (?,?,?,?,?,?)
         `;
 
-        return db.execute(query, [title, description, status, userId, priority, teamId])
+        const result = await db.execute(query, [title, description, status, userId, priority, teamId]);
+
+        return result[0].insertId;
     }
 
     repoGetAllIsues( issueObj ) {

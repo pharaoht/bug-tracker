@@ -59,6 +59,10 @@ class Issue extends IssueRepository{
         return this.repoGetIssuesByStatus( type )
     };
 
+    modelGetSortIssues( columnToBeSorted, sortDirection, limit, offset ){
+        return this.repoGetSortIssues(columnToBeSorted, sortDirection, limit, offset);
+    }
+
 };
 
 

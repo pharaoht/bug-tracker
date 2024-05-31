@@ -153,6 +153,33 @@ module.exports = class IssueRepository{
         return db.execute(query, [type])
     }
 
+    repoGetSortIssues( columnToBeSort, sortDirection, limit, offset ){
+
+        const allowedColumns = ['user_id', 'createdAt', 'title', 'status', 'priority']; 
+        const allowedDirections = ['ASC', 'DESC'];
+
+        if (!allowedColumns.includes(columnToBeSort)) {
+            throw new Error('Invalid column name');
+        }
+
+        if (!allowedDirections.includes(sortDirection.toUpperCase())) {
+            throw new Error('Invalid sort direction');
+        }
+
+        const query = `
+            SELECT ${this._columns}
+            FROM ${this._tableName}
+            JOIN teams on issue.team_id = teams.id
+            JOIN users on issue.user_id = users.id
+            ORDER BY ${columnToBeSort} ${sortDirection}
+            LIMIT ?
+            OFFSET ?
+        `;
+
+        return db.execute(query, [limit, offset]);
+
+    }
+
     async repoArchiveIssue( id ){
 
         const connection = await db.getConnection();

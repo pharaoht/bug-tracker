@@ -271,12 +271,26 @@ async function httpExportToPdf(req, res){
 
 async function httpSortIssues(req, res){
 
+    const params = req.query;
+
+    const { columnType, sortDirection, limit, offset } = params;
+
     try{
+
+        const result = await issueModel.modelGetSortIssues(columnType, sortDirection, limit, offset);
+
+        const dto = issueDal.toDto(result);
+
+        res.status(200).json(dto);
 
     }
     catch(error){
 
+        console.log('error', error.message);
+
+        return res.status(400).json({ error: error.message });
     }
+
 };
 
 async function httpGetIssuesByUserId(req, res){

@@ -37,6 +37,7 @@ class CommentRepository {
             JOIN users ON comments.user_id = users.id
             JOIN teams ON users.team_id = teams.id
             WHERE issue_id = ?
+            ORDER BY comments.createdAt ASC
         `;
 
         return await db.execute(query, [id]);

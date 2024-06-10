@@ -13,8 +13,6 @@ const setUpCookieMiddleware = require('./middleware/cookie.middleware');
 
 require('./middleware/passport.middleware');
 
-const isLoginMiddlware = require('./middleware/login.middleware');
-
 const errorCatchMiddleWare = require('./middleware/errorHandler.middleware');
 
 //Routes
@@ -25,7 +23,10 @@ const issueRouter = require('./issue/routes/issue.routes');
 const userRouter = require('./user/routes/user.routes');
 
 const teamRouter = require('./team/routes/team.routes');
+
 const issueImagesRouter = require('./image/routes/image.routes');
+
+const commentRouter = require('./comment/routes/comment.routes');
 
 const app = express();
 
@@ -58,6 +59,8 @@ apiRouter.use(userRouter);
 apiRouter.use(teamRouter);
 
 apiRouter.use(issueImagesRouter);
+
+apiRouter.use(commentRouter);
 
 app.get('/' , (req, res) => {
 

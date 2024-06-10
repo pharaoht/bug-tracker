@@ -1,6 +1,34 @@
+const CommentDataAccessLayer = require("../dal/comment.dal");
+const CommentRepository = require("../respository/comment.repository");
 
 async function httpGetCommentsByIssueId(req, res){
 
+    try {
+
+        const issueId = req.params.id;
+
+        if(!issueId) {
+
+            throw new Error('No id provided')
+        };
+
+        const commentRepository = new CommentRepository();
+
+        const results = await commentRepository.repoGetCommentsByIssueId(issueId);
+
+        const commentDal = new CommentDataAccessLayer();
+        
+        const dto = commentDal.toDto(results);
+
+        return res.status(200).json(dto);
+    
+    }
+    catch(error){
+
+        console.error('Error creating comment', error);
+
+        res.status(400).json({ error: error.message || 'Internal server error'})
+    }
 };
 
 async function httpCreateCommentToIssue(req, res){
@@ -20,9 +48,11 @@ async function httpCreateCommentToIssue(req, res){
 
         const issueId = body.issueId;
 
-        //commentRepo.Create issue
+        const commentRepository = new CommentRepository();
 
-        //return success
+        await commentRepository.repoCreateNewCommentToIssue(commentText, userId, issueId);
+
+        return res.status(200).json({ data: 'success' })
 
     }
     catch(error){

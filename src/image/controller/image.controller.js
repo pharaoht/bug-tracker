@@ -24,8 +24,7 @@ async function httpGetImagesByIssueId(req, res){
 
 };
 
-
-
 module.exports = {
     httpGetImagesByIssueId,
+
 }

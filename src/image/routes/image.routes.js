@@ -8,5 +8,4 @@ const resource = '/images/issues';
 
 issueImagesRouter.get(`${resource}/:id`, httpGetImagesByIssueId );
 
-
 module.exports = issueImagesRouter;

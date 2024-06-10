@@ -1,7 +1,5 @@
 const express = require('express');
 
-const isLoginMiddlware = require('../../middleware/login.middleware');
-
 const verifyJwtCookie = require('../../middleware/jwt.middleware');
 
 const multerUpload = require('../../middleware/multer.middleware');

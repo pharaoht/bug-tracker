@@ -155,7 +155,7 @@ module.exports = class IssueRepository{
 
     repoGetSortIssues( columnToBeSort, sortDirection, limit, offset ){
 
-        const allowedColumns = ['user_id', 'createdAt', 'title', 'status', 'priority']; 
+        const allowedColumns = ['firstName', 'createdAt', 'title', 'status', 'priority']; 
         const allowedDirections = ['ASC', 'DESC'];
 
         if (!allowedColumns.includes(columnToBeSort)) {

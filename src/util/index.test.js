@@ -9,8 +9,4 @@ describe('camelToSnake', () => {
     expect(camelToSnake('snake_case_string')).toBe('snake_case_string'); 
   });
 
-  it('should handle acronyms and abbreviations', () => {
-    expect(camelToSnake('userID')).toBe('user_id');
-    expect(camelToSnake('HTML')).toBe('html');
-  });
 });

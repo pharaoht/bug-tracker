@@ -1,3 +1,4 @@
+const { notificationService } = require("../../server");
 const CommentDataAccessLayer = require("../dal/comment.dal");
 const CommentRepository = require("../respository/comment.repository");
 
@@ -52,6 +53,9 @@ async function httpCreateCommentToIssue(req, res){
 
         await commentRepository.repoCreateNewCommentToIssue(commentText, userId, issueId);
 
+        //create notification
+        // const isCreated = await notificationService.createNotification(userId, issueId);
+
         return res.status(200).json({ data: 'success' })
 
     }
@@ -69,6 +73,26 @@ async function httpUpdateCommentToIssue(req, res){
 }
 
 async function httpDeleteCommentToIssue(req, res){
+
+    try{
+
+        const commentId = req.params.id;
+
+        const commentRepository = new CommentRepository();
+
+        await commentRepository.repoDeleteCommentById(commentId);
+
+        res.status(200).json({ data:'success' });
+
+    }
+    catch(error){
+
+        console.log('Error deleting comment', error)
+
+        console.error(error.message);
+
+        res.status(400).json({ error: error.message || 'Internal server error'})
+    }
 
 }
 

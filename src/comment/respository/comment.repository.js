@@ -37,10 +37,21 @@ class CommentRepository {
             JOIN users ON comments.user_id = users.id
             JOIN teams ON users.team_id = teams.id
             WHERE issue_id = ?
-            ORDER BY comments.createdAt ASC
+            ORDER BY comments.createdAt DESC
         `;
 
         return await db.execute(query, [id]);
+    }
+
+    async repoDeleteCommentById(id){
+
+        const queryDelete = `
+            DELETE FROM ${this._tableName}
+            WHERE id = ?;
+        `;
+
+        return await db.execute(queryDelete, [id]);
+
     }
 };
 

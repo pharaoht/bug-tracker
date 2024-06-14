@@ -37,9 +37,9 @@ module.exports = class IssueRepository{
 
     repoGetAllIsues( issueObj ) {
 
-        const { skip, limit } = issueObj;
+        const { offset, limit } = issueObj;
 
-        const pageSkip = Math.abs(skip) || 1;
+        const pageSkip = Math.abs(offset) + 1 || 0;
 
         const pageLimit = Math.abs(limit) || 10;
 
@@ -70,10 +70,10 @@ module.exports = class IssueRepository{
                 CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages,
                 totalCount
                 FROM PagedIssues
-                WHERE RowNum BETWEEN ? AND ?;
+                WHERE RowNum BETWEEN ? AND CAST(TotalCount AS DECIMAL);
         `;
 
-        return db.execute(query, [ pageLimit, pageLimit, pageSkip, pageLimit ]);
+        return db.execute(query, [ pageLimit, pageLimit, pageSkip, ]);
     }
 
     repoGetOneIssue( issueId ){

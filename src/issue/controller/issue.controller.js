@@ -9,10 +9,10 @@ const issueImageDal = require('../../image/dal/image.dto');
 
 async function httpGetAllIssues(req, res) {
 
-    const { skip, limit } = req.query;
+    const { offset, limit } = req.query;
 
     const issueObj = {
-        skip: skip,
+        offset: offset,
         limit: limit
     }
 

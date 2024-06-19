@@ -4,7 +4,7 @@ const CommentDataAccessLayer = require("../dal/comment.dal");
 const IssueRepository = require("../../issue/repository/issue.repository");
 const UserRepository = require("../../user/repository/user.repository");
 const CommentRepository = require("../respository/comment.repository");
-const { notificationService } = require("../../services/notification/notification.services");
+const { createNotificationService } = require("../../services/notification/notification.services");
 
 async function httpGetCommentsByIssueId(req, res){
 
@@ -58,22 +58,24 @@ async function httpCreateCommentToIssue(req, res){
         await commentRepository.repoCreateNewCommentToIssue(commentText, userId, issueId);
 
         //get user info
-        const user = UserRepository.repoGetUserById(userId)
-
+        const user = await UserRepository.repoGetUserById(userId)
+    
         const userData = userDal.toDto(user);
 
         //get issue info
         const issueRepository = new IssueRepository();
 
-        const issue = issueRepository.repoGetOneIssue(issueId);
+        const issue = await issueRepository.repoGetOneIssue(issueId);
 
         const issueData = issueDal.toDto(issue); 
 
         //if user who comment is the owner then dont create event
         if(Number(issueData.userId) !== Number(userId)){
 
-            const nameOfUser = userData.name;
-            const titleOfIssue = issueData.title;
+            const nameOfUser = userData[0].name;
+            const titleOfIssue = issueData[0].title;
+
+            const notificationService = createNotificationService();
 
             //create notification
             notificationService.createNotification(userId, issueId, 0, nameOfUser, titleOfIssue, commentText);

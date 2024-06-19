@@ -11,14 +11,15 @@ class NotificationService extends NotificationRepository {
     async createNotification(userId, issueId, commentId, userName, issueTitle, commentMessage){
 
         try{
+
             //generate message
             const message = this.createMessage(userName, issueTitle, commentMessage);
 
             //sql to handle creating new notification
             //store message in dataabse
-            await this.repoCreateNotification();
+            await this.repoCreateNotification(userId, issueId, commentId, commentMessage);
 
-            if(this.connectedUsers[userId]){
+            if(this.connectedUsers.hasOwnProperty(userId)){
 
                 this.io
                 .to(this.connectedUsers[userId])
@@ -48,8 +49,11 @@ class NotificationService extends NotificationRepository {
     }
 };
 
-const notificationService = new NotificationService(global.io, global.connectedUsers)
+// Factory function to create NotificationService instance
+const createNotificationService = () => {
+    return new NotificationService(global.io, global.connectedUsers);
+};
 
 module.exports = {
-    notificationService
+    createNotificationService
 }

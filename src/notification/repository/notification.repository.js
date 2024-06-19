@@ -3,7 +3,7 @@ const db = require("../../database/db.connection");
 class NotificationRepository {
 
     constructor(){
-        this._tableName = 'notification'
+        this._tableName = 'notifications'
     }
 
     async repoCreateNotification(userId, issueId, commentId, commentText){

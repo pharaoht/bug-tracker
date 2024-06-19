@@ -10,12 +10,14 @@ const server = http.createServer(app);
 
 const io = socketIo(server);
 
-const { notificationService } = require('./sockets/index')(io);
+const connectedUsers = {};
+
+global.io = io;
+
+global.connectedUsers = connectedUsers;
+
+require('../src/sockets/index')(global.io, global.connectedUsers);
 
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
 });
-
-module.exports = {
-    notificationService
-}

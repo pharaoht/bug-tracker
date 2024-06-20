@@ -1,11 +1,11 @@
-const issueModel = require('../model/issue.model');
-const issueValidator = require('../validator/issue.validator');
 const issueDal = require('../dal/issue.dal');
+const issueModel = require('../model/issue.model');
+const issueImageDal = require('../../image/dal/image.dto');
+const issueValidator = require('../validator/issue.validator');
 const { deleteFileFromFs } = require('../../util/index');
 const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
-const ImageUploadService = require('../../services/upload/imageUpload.services');
 const ImageRepository = require('../../image/repository/image.repository');
-const issueImageDal = require('../../image/dal/image.dto');
+const ImageUploadService = require('../../services/upload/imageUpload.services');
 
 async function httpGetAllIssues(req, res) {
 
@@ -33,15 +33,15 @@ async function httpGetAllIssues(req, res) {
 
 async function httpCreateNewIssue(req, res) {
 
-    const body = req.body;
-
     let filepath;
-
+    
     if(req.file){
         filepath = req.file.path;
     }
-
+        
     try{
+
+        const body = req.body;
 
         issueValidator.validateInputString(body);
 
@@ -73,10 +73,10 @@ async function httpCreateNewIssue(req, res) {
 };
 
 async function httpGetOneIssue(req, res, next){
-
-    const issueId = req.params.id;
     
     try {
+
+        const issueId = req.params.id;
         
         const results = await issueModel.modelGetOneIssue(issueId);
 
@@ -92,39 +92,27 @@ async function httpGetOneIssue(req, res, next){
 
     }
 
-    
 };
 
 async function httpUpdateIssue(req, res){
-
-    const issueId = req.params.id;
-
-    const body = req.body;
-
+    
     try{
+
+        const issueId = req.params.id;
+    
+        const body = req.body;
 
         issueValidator.validateInputString(body);
 
-    }
-    catch(error){
+        const issueData = {
+            id: issueId,
+            title: body.title,
+            description: body.description,
+            status: body.status,
+            priority: body.priority
+        };
 
-        console.log(`Error: ${error.message}`);
-
-        return res.status(400).json({'error': error.message});
-
-    }
-
-    const issueData = {
-        id: issueId,
-        title: body.title,
-        description: body.description,
-        status: body.status,
-        priority: body.priority
-    };
-
-    const fromDto = issueDal.fromDto(issueData);
-
-    try {
+        const fromDto = issueDal.fromDto(issueData);
         
         await issueModel.modelUpdateIssue(fromDto);
 
@@ -140,10 +128,10 @@ async function httpUpdateIssue(req, res){
 }
 
 async function httpArchiveIssue(req, res){
-
-    const issueId = req.params.id;
-
+    
     try {
+
+        const issueId = req.params.id;
 
         const imageRepository = new ImageRepository();
 

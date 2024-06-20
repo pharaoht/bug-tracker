@@ -1,12 +1,7 @@
-const NotificationService = require('../services/notification/notification.services');
 const messagesSocket = require('./messages.socket');
 const notificationSocket = require('./notifications.socket');
 
-module.exports = function(io) {
-
-    const connectedUsers = {};
-
-    const notificationService = new NotificationService(io, connectedUsers);
+function initSockets(io, connectedUsers){
 
     io.on('connection', (socket) => {
 
@@ -33,7 +28,6 @@ module.exports = function(io) {
 
     notificationSocket(io);
 
-    return {
-        notificationService
-    }
 };
+
+module.exports = initSockets

@@ -83,10 +83,10 @@ async function httpCreateUser(req, res, next){
 };
 
 async function httpGetUserById(req, res){
-
-    const user = req.user;
-
+    
     try {
+
+        const user = req.user;
         
         const results = await User.modelGetUserById(user.id);
 
@@ -98,16 +98,17 @@ async function httpGetUserById(req, res){
     } catch (error) {
 
         console.log(error);
+    
         return res.status(400).json({error: error.message})
     }
 
 };
 
 async function httpUploadUserImage(req, res){
-
-    const filePath = req.file.path;
-
+    
     try{
+    
+        const filePath = req.file.path;
 
         const imageUploadService = new ImageUploadService();
 

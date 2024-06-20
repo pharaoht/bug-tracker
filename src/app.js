@@ -28,6 +28,8 @@ const issueImagesRouter = require('./image/routes/image.routes');
 
 const commentRouter = require('./comment/routes/comment.routes');
 
+const notificationRouter = require('./notification/routes/notifications.routes');
+
 const app = express();
 
 app.use(cors({ origin: ['http://localhost:3000', 'https://bug-tracker-frontend-kappa.vercel.app'], credentials: true }));
@@ -61,6 +63,8 @@ apiRouter.use(teamRouter);
 apiRouter.use(issueImagesRouter);
 
 apiRouter.use(commentRouter);
+
+apiRouter.use(notificationRouter);
 
 app.get('/' , (req, res) => {
 

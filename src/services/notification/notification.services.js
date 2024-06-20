@@ -8,19 +8,14 @@ class NotificationService extends NotificationRepository {
         this.connectedUsers = connectedUsers;
     }
 
-    async createNotification(userId, issueId, commentId, userName, issueTitle, commentMessage, ownerId){
+    async createNotification(issueId, commentId, userName, issueTitle, commentMessage, ownerId){
 
         try{
 
-            console.log(this.connectedUsers)
-
-            //generate message
             const message = await this.createMessage(userName, issueTitle, commentMessage);
 
-            //sql to handle creating new notification
-            //store message in dataabse
-            await this.repoCreateNotification(userId, issueId, commentId, commentMessage);
-             console.log(ownerId)
+            await this.repoCreateNotification(ownerId, issueId, commentId, message);
+
             if(this.connectedUsers.hasOwnProperty(ownerId)){
                
                 this.io
@@ -44,7 +39,7 @@ class NotificationService extends NotificationRepository {
     };
 
     async createMessage(userName, issueTitle, commentMessage){
-        return ` ${userName}, has just left a comment on issue ${issueTitle}. " ${commentMessage} "`;
+        return ` ${userName}, has left a comment on issue ${issueTitle}. " ${commentMessage} "`;
     }
 };
 

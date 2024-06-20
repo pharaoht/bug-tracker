@@ -74,11 +74,12 @@ async function httpCreateCommentToIssue(req, res){
 
             const nameOfUser = userData[0].name;
             const titleOfIssue = issueData[0].title;
+            const ownerOfIssue =  issueData[0].userId;
 
             const notificationService = createNotificationService();
 
             //create notification
-            notificationService.createNotification(userId, issueId, 0, nameOfUser, titleOfIssue, commentText, issueData[0].userId);
+            notificationService.createNotification(issueId, 0, nameOfUser, titleOfIssue, commentText, ownerOfIssue);
         }
 
         return res.status(200).json({ data: 'success' })

@@ -8,4 +8,6 @@ const notificationRouter = express.Router();
 
 const resource = '/notifications';
 
-notificationRouter.get(`${resource}/user/:id`, httpGetNotificationsByUserId)
+notificationRouter.get(`${resource}/user/:id`, verifyJWTlogin, httpGetNotificationsByUserId);
+
+module.exports = notificationRouter;

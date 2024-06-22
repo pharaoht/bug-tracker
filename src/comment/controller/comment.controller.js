@@ -3,7 +3,7 @@ const issueDal = require("../../issue/dal/issue.dal");
 const CommentDataAccessLayer = require("../dal/comment.dal");
 const IssueRepository = require("../../issue/repository/issue.repository");
 const UserRepository = require("../../user/repository/user.repository");
-const CommentRepository = require("../respository/comment.repository");
+const { initCommentRepository } = require("../respository/comment.repository");
 const { createNotificationService } = require("../../services/notification/notification.services");
 
 async function httpGetCommentsByIssueId(req, res){
@@ -17,7 +17,7 @@ async function httpGetCommentsByIssueId(req, res){
             throw new Error('No id provided')
         };
 
-        const commentRepository = new CommentRepository();
+        const commentRepository = initCommentRepository();
 
         const results = await commentRepository.repoGetCommentsByIssueId(issueId);
 
@@ -53,7 +53,7 @@ async function httpCreateCommentToIssue(req, res){
 
         const issueId = body.issueId;
 
-        const commentRepository = new CommentRepository();
+        const commentRepository = initCommentRepository();
 
         await commentRepository.repoCreateNewCommentToIssue(commentText, userId, issueId);
 
@@ -70,7 +70,7 @@ async function httpCreateCommentToIssue(req, res){
         const issueData = issueDal.toDto(issue); 
 
         //if user who comment is the owner then dont create event
-        if(Number(issueData.userId) !== Number(userId)){
+        if(Number(issueData[0].userId) !== Number(userId)){
 
             const nameOfUser = userData[0].name;
             const titleOfIssue = issueData[0].title;
@@ -104,7 +104,7 @@ async function httpDeleteCommentToIssue(req, res){
 
         const commentId = req.params.id;
 
-        const commentRepository = new CommentRepository();
+        const commentRepository = initCommentRepository();
 
         await commentRepository.repoDeleteCommentById(commentId);
 

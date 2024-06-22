@@ -35,4 +35,10 @@ class NotificationDataAccessLayer {
     }
 };
 
-module.exports = NotificationDataAccessLayer;
+const initIssueDataAccessLayer = () => {
+    return new NotificationDataAccessLayer();
+}
+
+module.exports = {
+    initIssueDataAccessLayer
+};

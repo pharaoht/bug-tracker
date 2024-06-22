@@ -1,4 +1,5 @@
 const NotificationRepository = require("../../notification/repository/notification.repository");
+const { initIssueDataAccessLayer } = require('../../notification/dal/notification.dal');
 
 class NotificationService extends NotificationRepository {
 
@@ -14,13 +15,21 @@ class NotificationService extends NotificationRepository {
 
             const message = await this.createMessage(userName, issueTitle, commentMessage);
 
-            await this.repoCreateNotification(ownerId, issueId, commentId, message);
+            const result = await this.repoCreateNotification(ownerId, issueId, commentId, message);
+
+            const insertedId = result[0].insertId;
 
             if(this.connectedUsers.hasOwnProperty(ownerId)){
                
+                const result = await this.repoGetNotificationById(insertedId);
+
+                const notificationDal = initIssueDataAccessLayer();
+
+                const dto = await notificationDal.toDto(result);
+
                 this.io
                 .to(this.connectedUsers[ownerId])
-                .emit('newCommentOnIssue', { message: message });
+                .emit('newCommentOnIssue', { message: dto[0] });
 
             };
 

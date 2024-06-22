@@ -55,5 +55,11 @@ class CommentRepository {
     }
 };
 
+const initCommentRepository = () => {
+    return new CommentRepository()
+}
 
-module.exports = CommentRepository;
+
+module.exports = {
+    initCommentRepository
+};

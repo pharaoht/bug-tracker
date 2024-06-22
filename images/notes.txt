@@ -32,3 +32,45 @@ Javascript Engine (Jit Compiler, best of both worlds)
 Parser -> Abstract Syntax Tree (AST) -> Interpreter -> Profiler -> Compiler -> Optimized code
                                             |
                                         bytecode
+
+
+This is my personal project portfolio, I have a few projects on this website hosted on Vercel.
+
+The projects range from backend API's, frontend SPA's or full stack applications.
+
+Project Car hub,
+Is a next.js application, that utilizes next.js api features to get car data from a third party API. In the application
+you can filter car data, for models, make, etc.
+
+Project Flight App,
+Is a next.js/react.js front end application as well. I am using tequila.kiwi api to get flight prices and flight data so
+the user and browse the cheapest options available. My application utilizes React hooks, i.e UseContext to store state
+that will be accessible across other components, eliminating prop drilling, utilizing other react libraries i.e Material
+UI for form control and inputs.
+
+Bug Tracker: Backend
+This API is a node.js, Express, Mysql project. This application is a similar version to Trello. I wanted to create a
+software issue tracker for my own projects to keep track of features and bugs.
+This is a loaded API that is still growing. I created this application following the onion architecture and mirco
+service pattern. I wanted this application to scale well as the data grows.
+
+Notable features,
+Image upload,
+Comment on issues,
+Web sockets: For notifying the owner of an issue that someone has commented on the an issue that is assigned to them
+Create, Read, Update, Delete Issues,
+Google OAuth,
+Sql Sorting,
+Pagination,
+Testing, Jest
+Features Coming:
+Live messaging
+Email/SMS notification
+
+
+Bug Tracker: Frontend
+This is a next.js React.js application that serves as the frontend for the bug tracker backend api
+
+As a passionate web developer, I take great pride in the work I produce. I have a deep enthusiasm for continuously
+learning and absorbing new knowledge, which I am eager to share with others. My open library mindset ensures that I am
+always ready to contribute to the growth and success of my colleagues, helping them achieve their goals as well.

@@ -16,7 +16,7 @@ class NotificationRepository {
         return await db.execute(query, [userId, issueId, commentId, commentText])
     }
 
-    async repoDeleteNotification(notificationId){
+    async repoDeleteNotificationById( notificationId ){
     
         const queryDelete = `
             DELETE FROM ${this._tableName}
@@ -32,13 +32,20 @@ class NotificationRepository {
             SELECT *
             FROM ${this._tableName}
             WHERE user_id = ?
+            ORDER BY createdAt DESC
         `;
 
         return await db.execute(query, [ userId ]);
     }
 
-    async repoGetNotificationByIssueId(){
+    async repoGetNotificationById( notificationId ){
+        const query = `
+            SELECT *
+            FROM ${this._tableName}
+            WHERE id = ?
+        `;
 
+        return await db.execute(query, [ notificationId ]);
     }
 
     async repoUpdateNotificationToRead( notificationId ){
@@ -46,7 +53,7 @@ class NotificationRepository {
         const query = `
             UPDATE ${this._tableName}
             SET
-                readStatus = 1,
+                readStatus = 1
             WHERE
                 id = ?
         `;

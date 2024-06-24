@@ -45,9 +45,9 @@ class Issue extends IssueRepository{
         return this.repoArchiveIssue(id)
     };
 
-    modelSearchIssues( searchTerm ) { 
+    modelSearchIssues( searchTerm, limit, offset ) { 
 
-        return this.repoSearchIssues(searchTerm)
+        return this.repoSearchIssues(searchTerm, limit, offset)
     };
 
     modelGetIssueByPriority( type ){

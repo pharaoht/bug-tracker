@@ -110,20 +110,41 @@ module.exports = class IssueRepository{
         return db.execute(query, [title, description, status, priority, id]);
     }
 
-    repoSearchIssues( searchTerm ){
+    repoSearchIssues( searchTerm, limit, offset ){
 
         const query = `
+            WITH PagedIssues AS (
+                SELECT 
+                    ${this._columns},
+                    ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
+                    COUNT(*) OVER () AS totalCount
+                FROM ${this._tableName}
+                JOIN users ON issue.user_id = users.id
+                JOIN teams ON issue.team_id = teams.id
+                WHERE CONCAT(title, ' ', description, ' ', users.firstName, ' ', users.lastName) LIKE ?
+                )
             SELECT 
-                ${this._columns}
-            FROM ${this._tableName}
-            JOIN teams on issue.team_id = teams.id
-            JOIN users on issue.user_id = users.id 
-            WHERE CONCAT(title, ' ', description) LIKE ?;
-        `;
+                issue_id,
+                title,
+                description,
+                status,
+                priority,
+                createdAt,
+                user_id,
+                firstName,
+                lastName,
+                teamName, 
+                imageUrl,
+                team_id,
+            CEIL(CAST(RowNum AS DECIMAL) / ?) AS currentPage,
+            CEIL(CAST(TotalCount AS DECIMAL) / ?) AS totalPages,
+            totalCount
+            FROM PagedIssues
+            WHERE RowNum BETWEEN ? AND CAST(TotalCount AS DECIMAL);`
 
         const searchTermWithWildcards = '%' + searchTerm + '%';
 
-        return db.execute(query, [searchTermWithWildcards])
+        return db.execute(query, [searchTermWithWildcards, limit, limit, offset])
     }
 
     repoGetIssueByPriority( type ){

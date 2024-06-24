@@ -164,9 +164,9 @@ async function httpSearchIssues(req, res){
 
     try{
 
-        const { searchTerm } = req.query;
+        const { searchTerm, limit, offset } = req.query;
        
-        const results = await issueModel.modelSearchIssues(searchTerm);
+        const results = await issueModel.modelSearchIssues(searchTerm, limit, offset);
 
         const dto = issueDal.toDto(results);
 

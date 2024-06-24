@@ -15,9 +15,9 @@ class NotificationService extends NotificationRepository {
 
             const message = await this.createMessage(userName, issueTitle, commentMessage);
 
-            const result = await this.repoCreateNotification(ownerId, issueId, commentId, message);
+            const [result] = await this.repoCreateNotification(ownerId, issueId, commentId, message);
 
-            const insertedId = result[0].insertId;
+            const insertedId = result.insertId;
 
             if(this.connectedUsers.hasOwnProperty(ownerId)){
                
@@ -25,11 +25,11 @@ class NotificationService extends NotificationRepository {
 
                 const notificationDal = initIssueDataAccessLayer();
 
-                const dto = await notificationDal.toDto(result);
+                const [dto] = await notificationDal.toDto(result);
 
                 this.io
                 .to(this.connectedUsers[ownerId])
-                .emit('newCommentOnIssue', { message: dto[0] });
+                .emit('newCommentOnIssue', { message: dto });
 
             };
 

@@ -276,6 +276,8 @@ async function httpSortIssues(req, res){
 
         console.log('error', error.message);
 
+        console.error(error)
+
         return res.status(400).json({ error: error.message });
     }
 

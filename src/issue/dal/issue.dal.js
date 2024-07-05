@@ -48,8 +48,8 @@ class IssueDataAccessLayer {
                 imageUrl: userImageUrl,
                 createdBy: `${capitalizeFirstLetter(itm[this.firstName])}, ${capitalizeFirstLetter(itm[this.lastName])}`,
                 totalCount: itm.totalCount,
-                currentPage: itm.currentPage,
-                totalPages: itm.totalPages
+                currentPage: itm.currentPage || Math.ceil(Number(itm.rowNum / 10)),
+                totalPages: itm.totalPages || Math.ceil(Number(itm.totalCount / 10))
             }
 
         });

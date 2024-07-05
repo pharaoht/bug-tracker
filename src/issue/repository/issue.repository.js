@@ -188,7 +188,10 @@ module.exports = class IssueRepository{
         }
 
         const query = `
-            SELECT ${this._columns}
+            SELECT 
+                ${this._columns},
+                ROW_NUMBER() OVER (ORDER BY issue.createdAt DESC) AS rowNum,
+                COUNT(*) OVER () AS totalCount
             FROM ${this._tableName}
             JOIN teams on issue.team_id = teams.id
             JOIN users on issue.user_id = users.id

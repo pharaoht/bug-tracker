@@ -1,3 +1,5 @@
+const initMessageDal = require("../dal/messages.dal");
+const initMessageRepository = require("../repository/messages.respository");
 
 async function httpGetMessagesByReceiverId(req, res){
 
@@ -6,14 +8,16 @@ async function httpGetMessagesByReceiverId(req, res){
         const senderId = req.params.senderId;
 
         const receiverId = req.params.receiverId;
-        
-        //create the model for messages
 
-        //init repo class
+        const messageRepository = initMessageRepository();
 
-        //dal
+        const messageDal = initMessageDal();
 
-        //return data
+        const result = messageRepository.repoGetMessagesByReceiverId(senderId, receiverId);
+
+        const dto = messageDal.toDto(result);
+
+        return res.status(200).json(dto);
 
     }
     catch(error){
@@ -24,12 +28,17 @@ async function httpGetMessagesByReceiverId(req, res){
     }
 };
 
+async function httpPostCreateNewMessage(req, res){
+
+}
+
 async function httpGetSearchMessages(req, res){
 
 }
 
 module.exports = {
     httpGetMessagesByReceiverId,
-    httpGetSearchMessages
+    httpGetSearchMessages,
+    httpPostCreateNewMessage
 }
 

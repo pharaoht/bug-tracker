@@ -89,4 +89,8 @@ CREATE TABLE messages (
     readStatus TINYINT NOT NULL DEFAULT 0, -- 0 for unread, 1 for read
     FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
-)
+);
+
+CREATE INDEX idx_sender_id ON messages(sender_id);
+CREATE INDEX idx_receiver_id ON messages(receiver_id);
+CREATE INDEX idx_createdAt ON messages(createdAt);

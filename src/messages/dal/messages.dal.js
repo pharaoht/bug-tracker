@@ -1,5 +1,7 @@
 const moment = require('moment');
 
+const IMAGEDOMAIN = process.env.IMAGE_CLOUD_DOMAIN;
+
 class MessageDataAccessLayer {
 
     constructor(){
@@ -30,17 +32,21 @@ class MessageDataAccessLayer {
 
             const readStatus = Number(itm[this.readStatus]) === 0 ? false : true;
 
+            const isSenderPresent = itm[this.senderId] ? true : false;
+
+            const receiverImage = itm[this.receiverImageUrl] && IMAGEDOMAIN + itm[this.receiverImageUrl];
+
             return {
                 id: itm[this.id],
                 messageText: itm[this.message],
                 isRead: readStatus,
-                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY'),
-                senderId: itm[this.senderId],
-                senderName: `${itm[this.senderFirstName]} ${itm[this.senderLastName]}`,
-                senderImageUrl: itm[this.senderImageUrl],
+                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY HH:MM'),
+                senderId: isSenderPresent ? itm[this.senderId] : null,
+                senderName: isSenderPresent ? `${itm[this.senderFirstName]} ${itm[this.senderLastName]}` : null,
+                senderImageUrl: isSenderPresent ? itm[this.senderImageUrl] : null,
                 receiverId: itm[this.receiverId],
                 receiverName: `${itm[this.receiverFirstName]} ${itm[this.receiverLastName]}`,
-                receiverImageUrl: itm[this.receiverImageUrl],
+                receiverImageUrl: receiverImage,
             }
         });
 

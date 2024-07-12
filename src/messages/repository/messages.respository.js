@@ -24,7 +24,7 @@ class MessageRepository {
             JOIN users AS receiver ON messages.receiver_id = receiver.id
             WHERE (messages.sender_id = ? AND messages.receiver_id = ?)
             OR (messages.sender_id = ? AND messages.receiver_id = ?)
-            ORDER BY messages.createdAt ASC;
+            ORDER BY messages.createdAt DESC;
         `;
 
         return await db.execute(query, [senderId, receiverId, receiverId, senderId]);
@@ -45,26 +45,76 @@ class MessageRepository {
 
         const query = `
             SELECT 
-                MAX(messages.id) AS id,
-                messages.receiver_id,
-                users.firstName AS receiver_firstName,
-                users.lastName AS receiver_lastName,
-                users.imageUrl AS receiver_imageUrl,
-                MAX(messages.createdAt) AS createdAt,
-                SUBSTRING_INDEX(GROUP_CONCAT(messages.message ORDER BY messages.createdAt DESC), ',', 1) AS message,
-                SUBSTRING_INDEX(GROUP_CONCAT(messages.readStatus ORDER BY messages.createdAt DESC), ',', 1) AS readStatus
-            FROM ${this._tableName} AS messages
-            JOIN users ON messages.receiver_id = users.id
-            WHERE messages.sender_id = ?
-            GROUP BY messages.receiver_id, users.firstName, users.lastName, users.imageUrl;
-
+                m1.id AS id,
+                CASE 
+                    WHEN m1.sender_id = ? THEN m1.receiver_id 
+                    ELSE m1.sender_id 
+                END AS receiver_id,
+                u.firstName AS receiver_firstName,
+                u.lastName AS receiver_lastName,
+                u.imageUrl AS receiver_imageUrl,
+                m1.message,
+                m1.createdAt,
+                m1.sender_id,
+                m1.readStatus
+            FROM
+                messages m1
+            JOIN
+                users u ON CASE 
+                            WHEN m1.sender_id = ? THEN m1.receiver_id 
+                            ELSE m1.sender_id 
+                        END = u.id
+            WHERE
+                m1.createdAt = (
+                    SELECT MAX(m2.createdAt)
+                    FROM messages m2
+                    WHERE (m2.sender_id = ? OR m2.receiver_id = ?)
+                    AND ((m2.sender_id = m1.sender_id AND m2.receiver_id = m1.receiver_id)
+                        OR (m2.sender_id = m1.receiver_id AND m2.receiver_id = m1.sender_id))
+                )
+            ORDER BY
+                m1.createdAt DESC;
         `;
 
-        return await db.execute(query, [senderId]);
+        return await db.execute(query, [senderId, senderId, senderId, senderId]);
     };
 
-    async repoUpdateMessage(messageId, message){
+    async repoGetUnReadMessages(receiverId){
 
+        const query = `
+            SELECT *
+            FROM ${this._tableName}
+            WHERE receiver_id = ? AND readStatus = 0
+        
+        `;
+
+        return await db.execute(query, [receiverId])
+    }
+
+    async repoUpdateReadStatus(senderId, receiverId){
+
+        const query = `
+            UPDATE ${this._tableName}
+            SET
+                readStatus = 1
+            WHERE
+                sender_id = ? AND receiver_id = ?
+        `;
+
+        return await db.execute(query, [senderId, receiverId])
+    }
+
+    async repoUpdateMessage(messageId, message){
+        const query = `
+            UPDATE ${this._tableName}
+            SET
+                sender_id = ?, 
+                receiver_id = ?,
+                message = ?, 
+                readStatus = 1
+            WHERE 
+                id = ?
+        `;
     }
 
     async repoDeleteMessage(messageId){

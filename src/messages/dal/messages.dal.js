@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { capitalizeFirstLetter } = require('../../util');
 
 const IMAGEDOMAIN = process.env.IMAGE_CLOUD_DOMAIN;
 
@@ -18,6 +19,7 @@ class MessageDataAccessLayer {
         this.receiverFirstName = 'receiver_firstName';
         this.receiverLastName = 'receiver_lastName';
         this.receiverImageUrl = 'receiver_imageUrl';
+        this.otherUserId = 'otherUser_id'
     }
 
     fromDto(){
@@ -40,12 +42,12 @@ class MessageDataAccessLayer {
                 id: itm[this.id],
                 messageText: itm[this.message],
                 isRead: readStatus,
-                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YYYY HH:MM'),
+                createdAt: moment.utc(itm[this.createdAt]).format('MM/DD/YY HH:mm'),
                 senderId: isSenderPresent ? itm[this.senderId] : null,
-                senderName: isSenderPresent ? `${itm[this.senderFirstName]} ${itm[this.senderLastName]}` : null,
+                senderName: isSenderPresent ? `${capitalizeFirstLetter(itm[this.senderFirstName])} ${capitalizeFirstLetter(itm[this.senderLastName])}` : null,
                 senderImageUrl: isSenderPresent ? itm[this.senderImageUrl] : null,
-                receiverId: itm[this.receiverId],
-                receiverName: `${itm[this.receiverFirstName]} ${itm[this.receiverLastName]}`,
+                receiverId: itm[this.receiverId] || itm[this.otherUserId],
+                receiverName: `${capitalizeFirstLetter(itm[this.receiverFirstName])} ${capitalizeFirstLetter(itm[this.receiverLastName])}`,
                 receiverImageUrl: receiverImage,
             }
         });

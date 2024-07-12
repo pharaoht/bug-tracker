@@ -12,7 +12,7 @@ const userRouter = express.Router();
 
 const resource = '/users';
 
-userRouter.get(`${resource}`, httpGetAllUsers);
+userRouter.get(`${resource}/get`, httpGetAllUsers);
 
 userRouter.get(`${resource}/new`, isLoginMiddlware, httpCreateUser);
 

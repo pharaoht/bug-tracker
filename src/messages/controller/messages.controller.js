@@ -99,17 +99,17 @@ async function httpGetUnReadMessages(req, res){
 
     try{
 
-        const receiverId = req.params.receiverId;
+        const receiverId = req.params.id;
 
         const messageRepository = initMessageRepository();
 
         const messageDal = initMessageDal();
 
-        const result = messageRepository.repoGetUnReadMessages(receiverId);
-
+        const result = await messageRepository.repoGetUnReadMessages(receiverId);
+    
         const dto = messageDal.toDto(result);
 
-        return res.status(200).result(dto)
+        return res.status(200).json(dto);
     }
     catch(error){
 

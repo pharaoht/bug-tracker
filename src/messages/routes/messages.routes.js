@@ -10,6 +10,8 @@ const resource = '/messages';
 
 messagesRouter.get(`${resource}/search`, verifyJwtCookie, httpGetSearchMessages);
 
+messagesRouter.get(`${resource}/newMessages/:id`, verifyJwtCookie, httpGetUnReadMessages);
+
 messagesRouter.get(`${resource}/:receiverId`, verifyJwtCookie, httpGetUnReadMessages);
 
 messagesRouter.post(`${resource}/:senderId/:receiverId`, verifyJwtCookie, httpGetMessagesByReceiverId);

@@ -58,6 +58,25 @@ class IssueDataAccessLayer {
 
     };
 
+    toTotalDto(data){
+
+        const issueData = data.slice(0, 1).flat();
+
+        const itm = issueData[0];
+
+        if (!itm) {
+            return [];
+        }
+
+        const dto = {
+            totalCount: itm.totalCount,
+            currentPage: itm.currentPage || Math.ceil(Number(itm.rowNum) / 10),
+            totalPages: itm.totalPages || Math.ceil(Number(itm.totalCount) / 10)
+        };
+
+        return [dto];
+    }
+
     fromDto ( data ){
 
 

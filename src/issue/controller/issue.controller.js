@@ -92,6 +92,8 @@ async function httpCreateNewIssue(req, res) {
 
         await imageRepository.repoCreateImage(resultId, fileUrl);
 
+        await redisInstance.clearAllCluster();
+
         return res.status(200).json({ data:'success' })
 
     }
@@ -149,6 +151,8 @@ async function httpUpdateIssue(req, res){
         
         await issueModel.modelUpdateIssue(fromDto);
 
+        await redisInstance.clearAllCluster();
+
         return res.status(200).json({ data: 'success' })
 
     } catch (error) {
@@ -177,6 +181,8 @@ async function httpArchiveIssue(req, res){
         await imageUploadService.deleteImage(dto[0].imageKey, 'issue');
         
         await issueModel.modelArchiveIssue(issueId);
+
+        await redisInstance.clearAllCluster();
 
         return res.status(200).json({ data: 'success' })
 

@@ -49,7 +49,7 @@ class RedisCacheService {
 
             const value = await this.redisClient.get(key);
 
-            return JSON.parse(value);
+            return value ? JSON.parse(value) : null;
         }
         catch(error){
 
@@ -68,6 +68,38 @@ class RedisCacheService {
             console.error('Error while setting key/value in redis:', error)
         };
     };
+
+    async clearAllCluster() {
+
+        try {
+    
+            await this.redisClient.flushAll();
+
+            console.log('All keys in the cluster have been cleared');
+
+        } catch (error) {
+    
+            console.error('Error clearing all keys in the cluster:', err);
+
+            throw err;
+        }
+    }
+
+    async clearOneCluster(key) {
+
+        try {
+
+            await this.redisClient.del(key);
+
+            console.log(`Key ${key} has been cleared`);
+
+        } catch (err) {
+
+            console.error(`Error clearing key ${key} from Redis:`, err);
+
+            throw err;
+        }
+    }
 };
 
 const instance = new RedisCacheService();

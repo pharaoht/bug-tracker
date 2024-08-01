@@ -58,7 +58,7 @@ async function httpCreateCommentToIssue(req, res){
         await commentRepository.repoCreateNewCommentToIssue(commentText, userId, issueId);
 
         //get user info
-        const user = await UserRepository.repoGetUserById(userId)
+        const user = await UserRepository.repoGetUserById(userId);
     
         const userData = userDal.toDto(user);
 

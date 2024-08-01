@@ -4,13 +4,15 @@ const verifyJwtCookie = require('../../middleware/jwt.middleware');
 
 const multerUpload = require('../../middleware/multer.middleware');
 
-const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus, httpExportToPdf, httpUploadIssueImage } = require('../controller/issue.controller');
+const { httpGetAllIssues, httpCreateNewIssue, httpGetOneIssue, httpUpdateIssue, httpArchiveIssue, httpSearchIssues, httpSortIssues, httpGetIssuesByUserId, httpGetIssuesByPriority, httpGetIssuesByStatus, httpExportToPdf, httpUploadIssueImage, httpGetIssueTotal } = require('../controller/issue.controller');
 
 const issueRouter = express.Router();
 
 const resource = '/issues';
 
 issueRouter.get(`${resource}`, httpGetAllIssues);
+
+issueRouter.get(`${resource}/total`, httpGetIssueTotal);
 
 issueRouter.get(`${resource}/search`, httpSearchIssues);
 

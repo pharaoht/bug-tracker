@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const path = require('path');
 
+const redis = require('./services/cache/cache.services');
+
 const passport = require('passport');
 
 const serverLogger = require('./middleware/logger.middleware');

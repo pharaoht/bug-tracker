@@ -6,6 +6,7 @@ const { deleteFileFromFs } = require('../../util/index');
 const { htmlToPdfBuilder } = require('../../services/pdf/pdf.services');
 const ImageRepository = require('../../image/repository/image.repository');
 const ImageUploadService = require('../../services/upload/imageUpload.services');
+const redisInstance = require('../../services/cache/cache.services');
 
 async function httpGetAllIssues(req, res) {
 
@@ -17,19 +18,51 @@ async function httpGetAllIssues(req, res) {
     }
 
     try{
+
+        const cache = await redisInstance.get(`issueOffset${offset}`);
+
+        if(cache !== null) return res.status(200).json(cache);
+
         const results = await issueModel.modelGetAllIssues(issueObj);
 
         const dto = issueDal.toDto(results);
+
+        redisInstance.set(`issueOffset${offset}`, dto);
   
         return res.status(200).json(dto);
     }
     catch(error){
-        console.log(error)
+
+        console.log(error);
+
         return res.status(400).json({error:'something went wrong'})
     }
-
-
 };
+
+async function httpGetIssueTotal(req, res){
+
+    const { offset, limit } = req.query;
+
+    const issueObj = {
+        offset: offset,
+        limit: limit
+    }
+
+    try{
+
+        const results = await issueModel.modelGetAllIssues(issueObj);
+
+        const dto = issueDal.toTotalDto(results);
+  
+        return res.status(200).json(dto);
+    }
+    catch(error){
+
+        console.log(error);
+
+        return res.status(400).json({error:'something went wrong'})
+    }
+}
 
 async function httpCreateNewIssue(req, res) {
 
@@ -58,6 +91,8 @@ async function httpCreateNewIssue(req, res) {
         const imageRepository = new ImageRepository();
 
         await imageRepository.repoCreateImage(resultId, fileUrl);
+
+        await redisInstance.clearAllCluster();
 
         return res.status(200).json({ data:'success' })
 
@@ -116,6 +151,8 @@ async function httpUpdateIssue(req, res){
         
         await issueModel.modelUpdateIssue(fromDto);
 
+        await redisInstance.clearAllCluster();
+
         return res.status(200).json({ data: 'success' })
 
     } catch (error) {
@@ -144,6 +181,8 @@ async function httpArchiveIssue(req, res){
         await imageUploadService.deleteImage(dto[0].imageKey, 'issue');
         
         await issueModel.modelArchiveIssue(issueId);
+
+        await redisInstance.clearAllCluster();
 
         return res.status(200).json({ data: 'success' })
 
@@ -351,5 +390,6 @@ module.exports = {
     httpGetIssuesByPriority,
     httpGetIssuesByStatus,
     httpExportToPdf,
-    httpUploadIssueImage
+    httpUploadIssueImage,
+    httpGetIssueTotal
 }
